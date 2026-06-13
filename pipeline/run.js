@@ -224,7 +224,13 @@ const CHURCH_CHANNEL_IDS = [
   "UCz9PqE5Qr9avopAPkfCZcSQ", // Mosaic (Los Angeles)
   "UCTZP74GSkSRyPx4Vmlr__sw", // Mariners Church (Irvine, CA)
   "UC-SIZeefaLzZc422nBYlmag", // Sandals Church (Riverside, CA)
+  "UC1yVM5YyhbQklBSCDrlEsWA", // 2|42 Community Church (Michigan)
+  "UCqSN35PGpeZuHXNJAFFicfg", // Liquid Church (New Jersey)
+  "UCUiw_gESt-zfq6g5KeujquA", // The Crossing (St. Louis, MO)
 ];
+
+// Resolved from @handle at runtime (no clean channel ID handy).
+const CHURCH_CHANNEL_HANDLES = ["realityla", "SubstanceChurch", "RedemptionChurchAZ", "BridgetownChurch"];
 
 // Always surface this one (resolved from @handle at runtime).
 const MUST_INCLUDE_HANDLES = ["GraceChurchFL"]; // Grace Church Orlando
@@ -286,6 +292,10 @@ async function fetchSocialPosts(ctx) {
     const id = await resolveHandle(h, key);
     console.log(`  · @${h} -> ${id || "not found"}`);
     if (id) { channelIds.add(id); forcedChannels.add(id); }
+  }
+  for (const h of CHURCH_CHANNEL_HANDLES) {
+    const id = await resolveHandle(h, key);
+    if (id) channelIds.add(id);
   }
   try {
     const { data } = await supabase.from("social_posts").select("account_handle").eq("kind", "channel");
