@@ -209,11 +209,16 @@ async function fetchCommsTrends(ctx) {
 }
 
 // Leadership/preaching YouTube channels for the "Watch This Week" wall.
+// A wider, mixed set so the wall never reads as one source.
 const YT_CHANNELS = [
+  ["Craig Groeschel", "UCIIdiIO-Y20hRW9niR0CA8A"],
+  ["Carey Nieuwhof", "UClUd0Z_Y7-PgkCjjwddM5Qw"],
+  ["Andy Stanley", "UCZWmksterrOcTNh1ljvs6Hg"],
   ["The Gospel Coalition", "UCQMwm-DeHyFK5VPp6KySR5Q"],
   ["Life.Church Open Network", "UCGDGRcOQeYgcHcGl0xUoTSQ"],
-  ["Andy Stanley", "UCZWmksterrOcTNh1ljvs6Hg"],
+  ["Transformation Church", "UCYv-siSKd3Gn9IsliO95gIw"],
 ];
+const MAX_PER_CHANNEL = 2;
 
 function decodeEntities(s) {
   return s
@@ -289,9 +294,18 @@ async function fetchSocialPosts(ctx) {
     return;
   }
 
-  // 3) Rank by views, keep the top 8.
+  // 3) Rank by views, but cap each channel so the wall stays varied.
   rows.sort((a, b) => b.likes - a.likes);
-  rows = rows.slice(0, 8);
+  const perChannel = {};
+  const picked = [];
+  for (const r of rows) {
+    const c = perChannel[r.account_handle] || 0;
+    if (c >= MAX_PER_CHANNEL) continue;
+    perChannel[r.account_handle] = c + 1;
+    picked.push(r);
+    if (picked.length >= 8) break;
+  }
+  rows = picked;
   if (rows.length === 0) return;
 
   // Replace just the video lane; leaves curated accounts/posts untouched.
