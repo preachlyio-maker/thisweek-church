@@ -696,6 +696,41 @@ async function logRun(ctx) {
   console.log(`  ✓ logged run`);
 }
 
+// Fill thumbnails/author for curated TikTok posts via TikTok's free public
+// oEmbed (no key). Paste a TikTok URL into social_posts (kind="post",
+// platform="tiktok") and the wall gets a real thumbnail on the next run.
+async function enrichTikTokPosts(ctx) {
+  if (!supabase) return;
+  const { data, error } = await supabase
+    .from("social_posts")
+    .select("id, post_url, thumbnail_url, caption_excerpt, account_name")
+    .eq("platform", "tiktok")
+    .eq("kind", "post");
+  if (error || !data || data.length === 0) {
+    console.log("  · no curated TikTok posts to enrich");
+    return;
+  }
+  let updated = 0;
+  for (const row of data) {
+    if (row.thumbnail_url) continue;
+    try {
+      const json = await ytJson(`https://www.tiktok.com/oembed?url=${encodeURIComponent(row.post_url)}`);
+      const patch = {};
+      if (json.thumbnail_url) patch.thumbnail_url = json.thumbnail_url;
+      if (!row.caption_excerpt && json.title) patch.caption_excerpt = decodeEntities(json.title);
+      if (!row.account_name && json.author_name) patch.account_name = json.author_name;
+      if (Object.keys(patch).length) {
+        await supabase.from("social_posts").update(patch).eq("id", row.id);
+        updated++;
+      }
+    } catch (err) {
+      console.log(`  · tiktok oembed skipped (${err.message})`);
+    }
+  }
+  if (updated) ctx.changedPaths.add("/");
+  console.log(`  ✓ enriched ${updated} TikTok posts`);
+}
+
 const PIPELINE_STEPS = [
   fetchWorshipCharts,
   fetchSermonTopics,
@@ -703,6 +738,7 @@ const PIPELINE_STEPS = [
   fetchBenchmarkData,
   fetchCommsTrends,
   fetchSocialPosts,
+  enrichTikTokPosts,
   fetchExternalReads,
   generateDailyArticles,
   updateSitemap,
