@@ -9,19 +9,20 @@ export default function SiteFooter() {
             This Week · <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>Church</em>
           </span>
           <p style={{ fontSize: 12, fontWeight: 300, color: "#8A8578", lineHeight: 1.6 }}>
-            Weekly church trends and ministry data for communicators, pastors, and creative teams. A project by{" "}
-            <a href="https://preachly.io" style={{ color: "#5C7A5F" }}>Preachly</a>.
+            America&apos;s weekly church data hub — worship, sermons, giving, attendance, and engagement, updated every
+            Monday. Powered by{" "}
+            <a href="https://preachly.io" style={{ color: "#5C7A5F" }}>preachly.io</a>.
           </p>
         </div>
 
         {[
           {
             head: "Explore",
-            links: [{ href: "/trends", label: "All Trends" }, { href: "/articles", label: "Articles" }, { href: "/reads", label: "Best Reads" }, { href: "/benchmarks", label: "Benchmarks" }, { href: "/seasonal", label: "Seasonal" }],
+            links: [{ href: "/trends", label: "All Trends" }, { href: "/articles", label: "Articles" }, { href: "/reads", label: "Best Reads" }, { href: "/benchmarks", label: "Benchmarks" }, { href: "/about/data", label: "About the Data" }],
           },
           {
-            head: "Preachly",
-            links: [{ href: "https://preachly.io", label: "Preachly.io" }, { href: "https://preachly.io/features", label: "Features" }, { href: "https://preachly.io/pricing", label: "Pricing" }],
+            head: "preachly.io",
+            links: [{ href: "/about", label: "About" }, { href: "https://preachly.io", label: "preachly.io" }, { href: "https://preachly.io/features", label: "Features" }],
           },
         ].map(({ head, links }) => (
           <div key={head}>
@@ -39,7 +40,7 @@ export default function SiteFooter() {
 
       <div style={{ borderTop: "1px solid #C8C4B8", padding: "14px 28px", maxWidth: 1060, margin: "0 auto", display: "flex", justifyContent: "space-between" }}>
         <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", color: "#B8B4A8", textTransform: "uppercase" }}>
-          Data updated weekly · © {new Date().getFullYear()} Preachly
+          Data updated weekly · © {new Date().getFullYear()} preachly.io
         </span>
         <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", color: "#B8B4A8", textTransform: "uppercase" }}>
           Generated with Claude AI

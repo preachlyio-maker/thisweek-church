@@ -36,7 +36,7 @@ export const BENCHMARK_PAGES: BenchmarkPage[] = [
       "Low-friction info capture, usually a text-to-connect number on screen",
     ],
     preachly:
-      "Churches without a large follow-up team often lean on tools like Preachly to make sure every first-time guest gets a timely, personal next step.",
+      "Churches without a large follow-up team often lean on tools like preachly.io to make sure every first-time guest gets a timely, personal next step.",
     sources: [
       { label: "Faith Communities Today (FACT) survey" },
       { label: "Pushpay State of Church Giving" },
@@ -221,7 +221,7 @@ export const BENCHMARK_PAGES: BenchmarkPage[] = [
       "Sermon clips that pull people back to the full message",
     ],
     preachly:
-      "Tools like Preachly help churches deliver sermon notes, clips, and follow-up to their congregation without the cost of building and maintaining a dedicated app.",
+      "Tools like preachly.io help churches deliver sermon notes, clips, and follow-up to their congregation without the cost of building and maintaining a dedicated app.",
     sources: [
       { label: "Church tech platform averages" },
       { label: "Pushpay engagement data" },

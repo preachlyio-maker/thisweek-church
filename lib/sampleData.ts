@@ -64,7 +64,7 @@ export const SAMPLE_TRENDS: TrendPage[] = [
     ],
     summary:
       "As the calendar turns to summer, messages on rest, Sabbath, and managing anxiety are spiking — a familiar seasonal pattern as families travel and routines loosen.\n\nFor teaching pastors: \"Identity in Christ\" is emerging as a fresh series candidate this month. It pairs naturally with a summer slowdown, giving congregations a steady anchor when attendance ebbs and flows.",
-    sources: [{ label: "Sermon search trends" }, { label: "Preachly topic index" }],
+    sources: [{ label: "Sermon search trends" }, { label: "preachly.io topic index" }],
     related_slugs: ["summer-sermon-series-ideas", "most-referenced-scripture"],
   },
   {
@@ -198,7 +198,7 @@ export const SAMPLE_TRENDS: TrendPage[] = [
     ],
     summary:
       "The strongest summer series share one design principle: each week stands on its own, so travelers and first-time guests are never lost walking in mid-series.\n\nFor teaching teams: a Sabbath or Psalms series fits the season's mood and lets you pre-plan well ahead, freeing your calendar during the busiest travel weeks.",
-    sources: [{ label: "Preachly series planner" }],
+    sources: [{ label: "preachly.io series planner" }],
     related_slugs: ["trending-sermon-topics", "fathers-day-ministry-ideas"],
   },
   {

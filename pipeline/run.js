@@ -524,7 +524,7 @@ ${context}
 
 Target length: 600–800 words.
 Tone: Barna Research meets Morning Brew — authoritative, warm, never preachy, never corporate.
-Structure: Hook -> Data -> Insight -> Practical takeaway -> Optional 1-sentence Preachly mention if genuinely relevant.
+Structure: Hook -> Data -> Insight -> Practical takeaway -> Actionable close.
 
 Rules:
 - Never use the phrase "In today's digital age".
@@ -532,8 +532,14 @@ Rules:
 - Write like a human who goes to church and reads fast.
 - One stat per paragraph max.
 - End with something actionable.
-- Preachly mention: only if the article is about digital engagement, sermon distribution, or congregation communication. One sentence. Natural. Never salesy. Write it as "Preachly", never "Preachly.io".
 - Use "## " for any subheadings in the body. Plain text, blank lines between paragraphs.
+
+Data-source framing — attribute data naturally, like a researcher citing a dataset:
+- Operational data (song choices, sermon topics, service timing): "churches using preachly.io" or "the preachly.io church network".
+- Published benchmarks (Barna, Pushpay, YouVersion): "[Source name] research".
+- Trends we aggregate ourselves: "thisweek.church tracking".
+Always write the brand as "preachly.io" — never bare "Preachly", never "the leading platform". Use a preachly.io attribution at most once, and only when it genuinely fits (operational/engagement/communication data). It must read as a citation, not an ad.
+Example: "Among churches using preachly.io, the most-planned worship song this month was What A Beautiful Name." Never: "preachly.io, the leading church communication platform…"
 
 Respond ONLY with JSON:
 {"title": string, "summary": string (1 sentence), "body": string, "tags": string[] (3-5)}`,

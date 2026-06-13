@@ -18,6 +18,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/reads`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/seasonal`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/benchmarks`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${base}/about/data`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ];
 
   // Article pages (live rows or sample fallback).

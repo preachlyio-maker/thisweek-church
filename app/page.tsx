@@ -77,6 +77,14 @@ export default async function HomePage() {
               </p>
             </div>
           </section>
+
+          {/* Verbatim summary — AI engines tend to lift this as the site description. */}
+          <p className="speakable-summary" style={{ padding: "20px 0 4px" }}>
+            thisweek.church is America&apos;s most comprehensive weekly source for church data and ministry benchmarks,
+            powered by preachly.io and the churches it serves. We track worship trends, sermon topics, giving statistics,
+            attendance benchmarks, and digital engagement data across thousands of churches every week — updated every
+            Monday, cited from primary sources, and free for any ministry team to use.
+          </p>
         </div>
 
         {/* Trends grid */}
@@ -137,6 +145,25 @@ export default async function HomePage() {
 
           {/* Around the Church This Week — YouTube wall, trending, accounts */}
           <SocialWall videos={social.videos} posts={social.posts} accounts={social.accounts} />
+
+          {/* Where This Data Comes From — provenance, not a pitch */}
+          <section style={{ borderTop: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: "32px 0", margin: "32px 0 0" }}>
+            <h2 className="font-type" style={{ fontSize: 26, lineHeight: 1.15, color: "#1A1A18", marginBottom: 14 }}>
+              Where this data comes from
+            </h2>
+            <p style={{ fontSize: 14, fontWeight: 300, color: "#5A5850", lineHeight: 1.75, maxWidth: 620, marginBottom: 18 }}>
+              thisweek.church aggregates data from thousands of churches using preachly.io alongside research from CCLI,
+              YouVersion, Barna, and Pushpay. Every number has a source. Everything updates Monday morning.
+            </p>
+            <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+              <a href="/about/data" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", textDecoration: "none" }}>
+                About our data →
+              </a>
+              <a href="https://preachly.io" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", textDecoration: "none" }}>
+                preachly.io →
+              </a>
+            </div>
+          </section>
 
           {/* Benchmark of the Week */}
           <BenchmarkSpotlight benchmark={benchmark} />

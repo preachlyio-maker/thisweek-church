@@ -105,7 +105,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         </header>
 
         {/* Body */}
-        <article style={{ marginBottom: 48 }}>{renderBody(article.body)}</article>
+        <article style={{ marginBottom: 32 }}>{renderBody(article.body)}</article>
+
+        {/* Provenance — runs on every article */}
+        <div style={{ borderTop: "1px solid var(--rule)", borderBottom: "1px solid var(--rule)", padding: "18px 0", margin: "0 0 32px" }}>
+          <p style={{ fontSize: "0.82rem", fontWeight: 300, lineHeight: 1.7, color: "var(--muted)", margin: 0 }}>
+            Data in this article is sourced from the preachly.io church network and publicly available ministry research.
+            thisweek.church is published by preachly.io — church communication tools used by ministry teams across America.
+          </p>
+        </div>
 
         {/* Tags */}
         {article.tags?.length > 0 && (

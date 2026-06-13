@@ -94,6 +94,15 @@ body { min-height: 100vh; }
 
 .rule { border: none; border-top: 1px solid var(--rule); }
 
+/* The one-paragraph site summary AI engines tend to lift verbatim. */
+.speakable-summary {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: #5A5850;
+  max-width: 760px;
+}
+
 /* Generic link/affordance polish */
 a { transition: opacity 0.15s, color 0.15s; }
 a:hover { opacity: 0.78; }

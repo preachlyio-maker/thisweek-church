@@ -39,13 +39,21 @@ export default async function BenchmarkDetailPage({ params }: { params: Promise<
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: b.title,
+    "@type": "Dataset",
+    name: b.title,
     description: b.meta_description || b.summary,
-    dateModified: b.updated_at,
-    datePublished: b.updated_at,
+    url: `https://thisweek.church/benchmarks/${b.slug}`,
+    creator: { "@type": "Organization", name: "preachly.io", url: "https://preachly.io" },
     publisher: { "@type": "Organization", name: "This Week · Church", url: "https://thisweek.church" },
-    about: { "@type": "Thing", name: b.label },
+    isBasedOn: {
+      "@type": "Thing",
+      name: "preachly.io Church Reporting Network",
+      description:
+        "Aggregate data from thousands of churches using preachly.io for ministry communication and service planning",
+    },
+    isAccessibleForFree: true,
+    dateModified: b.updated_at,
+    spatialCoverage: "United States",
   };
 
   return (

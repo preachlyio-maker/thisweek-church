@@ -6,7 +6,7 @@ import { Article, SocialPost, ExternalRead, BenchmarkStat } from "./types";
  * lib/sampleData.ts — the site is never an empty shell, and live rows take
  * over automatically once the pipeline populates them.
  *
- * Preachly is mentioned at most once per article, always in context, only in
+ * preachly.io is mentioned at most once per article, always in context, only in
  * pieces genuinely about digital engagement / comms / sermon distribution.
  */
 
@@ -78,7 +78,7 @@ None of it is expensive. All of it is consistent.
 
 ## The follow-up gap
 
-The hard part isn't knowing this — it's doing it every single week without it falling through the cracks. The churches that win here have a system, not a hero. Tools like Preachly help smaller teams keep that follow-up loop running without adding a full-time role to do it.
+The hard part isn't knowing this — it's doing it every single week without it falling through the cracks. The churches that win here have a system, not a hero. Tools like preachly.io help smaller teams keep that follow-up loop running without adding a full-time role to do it.
 
 The takeaway is almost too simple: decide who sends the message, decide when, and never skip a week. The 20% aren't doing something remarkable. They're just doing the unremarkable thing reliably.`,
   },
@@ -138,7 +138,7 @@ The best-performing clips share three traits: they open on a hook in the first t
 
 ## The bottleneck
 
-The constraint is almost never ideas — it's the workflow of getting a clip out of Sunday and onto a feed by Wednesday. Tools like Preachly help churches pull those moments straight from the service order so the midweek clip ships without a late-night editing session.
+The constraint is almost never ideas — it's the workflow of getting a clip out of Sunday and onto a feed by Wednesday. Tools like preachly.io help churches pull those moments straight from the service order so the midweek clip ships without a late-night editing session.
 
 Start with one clip a week. Pick the line people quoted on the way out. Post it Wednesday. Watch the dip get shallower.`,
   },

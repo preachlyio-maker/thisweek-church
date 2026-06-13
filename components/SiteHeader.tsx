@@ -84,7 +84,7 @@ export default function SiteHeader() {
                 alignItems: "center",
               }}
             >
-              Try Preachly ↗
+              preachly.io ↗
             </Link>
           </div>
         </div>
