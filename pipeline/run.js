@@ -216,21 +216,55 @@ async function fetchSocialPosts(ctx) {
   void ctx;
 }
 
+// Broad curated set of reputable church sources, skewed to PASTORS & LEADERSHIP.
+// Broken/unreachable feeds are skipped automatically — over-inclusion is safe.
 const RSS_FEEDS = [
-  ["ChurchLeaders", "https://churchleaders.com/feed"],
+  // Leadership / pastoral
   ["Carey Nieuwhof", "https://careynieuwhof.com/feed"],
-  ["Thom Rainer", "https://churchanswers.com/feed"],
-  ["ChurchTechToday", "https://churchtechtoday.com/feed"],
-  ["Outreach Magazine", "https://outreachmagazine.com/feed"],
+  ["Church Answers", "https://churchanswers.com/feed"],
+  ["The Unstuck Group", "https://theunstuckgroup.com/feed"],
+  ["unSeminary", "https://unseminary.com/feed"],
+  ["Eric Geiger", "https://ericgeiger.com/feed"],
+  ["Ron Edmondson", "https://ronedmondson.com/feed"],
+  ["Brian Dodd on Leadership", "https://briandoddonleadership.com/feed"],
+  ["Chuck Lawless", "https://chucklawless.com/feed"],
+  ["Sam Rainer", "https://samrainer.com/feed"],
+  ["Karl Vaters", "https://karlvaters.com/feed"],
+  ["The Malphurs Group", "https://malphursgroup.com/feed"],
+  ["Vanderbloemen", "https://www.vanderbloemen.com/blog/rss.xml"],
+  ["Tony Morgan", "https://tonymorganlive.com/feed"],
+  // Preaching
+  ["Preaching.com", "https://www.preaching.com/feed"],
+  ["Pro Preacher", "https://propreacher.com/feed"],
+  ["SermonCentral", "https://www.sermoncentral.com/pastors-preaching-articles.rss"],
+  // Theology / discipleship
   ["The Gospel Coalition", "https://www.thegospelcoalition.org/feed"],
+  ["Desiring God", "https://www.desiringgod.org/feed"],
+  ["9Marks", "https://www.9marks.org/feed"],
+  ["Crossway", "https://www.crossway.org/articles/feed/"],
+  // Research / data
   ["Lifeway Research", "https://research.lifeway.com/feed"],
+  ["Barna Group", "https://www.barna.com/feed"],
+  ["Hartford Institute", "https://hartfordinstitute.org/feed"],
+  // Growth / outreach / general
+  ["Outreach Magazine", "https://outreachmagazine.com/feed"],
+  ["ChurchLeaders", "https://churchleaders.com/feed"],
+  ["Exponential", "https://exponential.org/feed"],
+  ["Christianity Today", "https://www.christianitytoday.com/feed/"],
+  ["RELEVANT", "https://relevantmagazine.com/feed"],
 ];
 
-const RELEVANCE_KEYWORDS = [
-  "church growth", "worship", "communication", "engagement", "giving", "generosity",
-  "attendance", "leadership", "discipleship", "volunteer", "sermon", "pastor",
-  "ministry", "outreach", "prayer", "gen z", "digital", "first-time", "guest",
-];
+// Weighted toward the topics a lead/teaching/executive pastor cares about.
+const RELEVANCE_KEYWORDS = {
+  "lead pastor": 4, "senior pastor": 4, "executive pastor": 4,
+  leadership: 3, preaching: 3, discipleship: 3, "church growth": 3,
+  "church planting": 3, revitalization: 3, pastoral: 3, shepherd: 3, eldership: 3,
+  pastor: 2, sermon: 2, vision: 2, strategy: 2, leader: 2, succession: 2,
+  burnout: 2, team: 2, staff: 2, board: 2, calling: 2, theology: 2, gospel: 2,
+  disciple: 2, attendance: 2, giving: 2, elders: 2,
+  church: 1, ministry: 1, faith: 1, engagement: 1, growth: 1, outreach: 1,
+  volunteer: 1, community: 1, prayer: 1, culture: 1, congregation: 1,
+};
 
 function stripTags(s) {
   return s
@@ -268,7 +302,11 @@ function parseFeed(xml) {
 
 function scoreItem(item) {
   const hay = `${item.title} ${item.description}`.toLowerCase();
-  return RELEVANCE_KEYWORDS.reduce((n, kw) => (hay.includes(kw) ? n + 1 : n), 0);
+  let score = 0;
+  for (const [kw, weight] of Object.entries(RELEVANCE_KEYWORDS)) {
+    if (hay.includes(kw)) score += weight;
+  }
+  return score;
 }
 
 async function fetchExternalReads(ctx) {
@@ -293,10 +331,10 @@ async function fetchExternalReads(ctx) {
   const top = collected
     .filter((i) => i.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 6);
+    .slice(0, 8);
 
   if (top.length === 0) {
-    console.log("  · no relevant reads found — leaving sample reads in place");
+    console.log("  · no relevant reads found — leaving existing reads in place");
     return;
   }
 
@@ -342,11 +380,14 @@ Respond ONLY with JSON: an array of objects {"index": number, "summary": string}
     published_at: toIso(it.pubDate),
   }));
 
+  // Replace the weekly set (only now that we have fresh picks in hand, so a
+  // failed fetch can never leave the section empty).
+  await supabase.from("external_reads").delete().neq("id", "00000000-0000-0000-0000-000000000000");
   const { error } = await supabase.from("external_reads").insert(rows);
   if (error) throw new Error(error.message);
   ctx.readsCreated += rows.length;
   ctx.changedPaths.add("/reads");
-  console.log(`  ✓ inserted ${rows.length} reads`);
+  console.log(`  ✓ replaced reads with ${rows.length} fresh picks`);
 }
 
 const ARTICLE_TYPES = [
@@ -387,7 +428,7 @@ async function generateDailyArticles(ctx) {
         model: ARTICLE_MODEL,
         max_tokens: 2000,
         system:
-          "You are a senior editor at a church trends publication. You write for church communicators, creative directors, worship leaders, and lead pastors at churches of all sizes.",
+          "You are a senior editor at a church trends publication. Your primary readers are lead, teaching, and executive pastors and church leaders. Write to their concerns — preaching, leadership, discipleship, church growth and health, and the research behind ministry strategy — at churches of all sizes.",
         messages: [
           {
             role: "user",

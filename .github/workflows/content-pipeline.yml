@@ -1,16 +1,16 @@
-name: Weekly Trend Pipeline
+name: Content Pipeline
 
 on:
   schedule:
-    # Every Monday at 6:00 AM UTC
-    - cron: "0 6 * * 1"
-  # Allow manual runs from GitHub Actions tab
+    # Daily at 11:00 AM UTC — refreshes reads, trends, and ~2 new articles.
+    - cron: "0 11 * * *"
+  # Allow manual runs from the GitHub Actions tab
   workflow_dispatch:
 
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
@@ -30,3 +30,6 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+          # Optional: set repo variable ARTICLE_AUTOPUBLISH=true to publish AI
+          # articles immediately. Left unset = saved as drafts for your review.
+          ARTICLE_AUTOPUBLISH: ${{ vars.ARTICLE_AUTOPUBLISH }}
