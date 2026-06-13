@@ -13,9 +13,9 @@ import { format } from "date-fns";
 export const revalidate = 3600;
 
 const CAT_LINKS = [
-  { href: "/trends?category=worship", label: "Worship Songs" },
-  { href: "/trends?category=sermon", label: "Sermon Topics" },
-  { href: "/trends?category=scripture", label: "Scripture" },
+  { href: "/trends/worship", label: "Worship Songs" },
+  { href: "/trends/sermons", label: "Sermon Topics" },
+  { href: "/trends/scripture", label: "Scripture" },
   { href: "/trends?category=comms", label: "Church Comms" },
   { href: "/seasonal", label: "Seasonal" },
   { href: "/benchmarks", label: "Benchmarks" },

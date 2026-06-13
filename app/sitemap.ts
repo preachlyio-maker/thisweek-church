@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getArticles } from "@/lib/content";
+import { getBenchmarkPages } from "@/lib/sampleBenchmarks";
 
 export const revalidate = 3600;
 
@@ -10,10 +11,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${base}/trends`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/trends/worship`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/trends/sermons`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/trends/scripture`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/articles`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
     { url: `${base}/reads`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/seasonal`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/benchmarks`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/benchmarks`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
   ];
 
   // Article pages (live rows or sample fallback).
@@ -24,9 +28,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  // Benchmark detail pages (curated dataset).
+  const benchmarkPages: MetadataRoute.Sitemap = getBenchmarkPages().map((b) => ({
+    url: `${base}/benchmarks/${b.slug}`,
+    lastModified: new Date(b.updated_at),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  const evergreen = [...staticPages, ...articlePages, ...benchmarkPages];
+
   try {
     const { createClient } = await import("@supabase/supabase-js");
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return staticPages;
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return evergreen;
 
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -45,8 +59,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-    return [...staticPages, ...articlePages, ...trendPages];
+    return [...evergreen, ...trendPages];
   } catch {
-    return [...staticPages, ...articlePages];
+    return evergreen;
   }
 }

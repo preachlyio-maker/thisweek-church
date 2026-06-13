@@ -118,3 +118,41 @@ export interface BenchmarkStat {
   source: string;
   href: string;
 }
+
+// ---------- Full benchmark detail pages ----------
+
+export interface BenchmarkComparison {
+  label: string;
+  value: string;
+  /** The church figure — rendered emphasized. */
+  highlight?: boolean;
+}
+
+export interface BenchmarkTier {
+  tier: string;
+  value: string;
+  note?: string;
+}
+
+export interface BenchmarkPage {
+  slug: string;
+  title: string;
+  /** Short label above the hero stat, e.g. "Average church email open rate". */
+  label: string;
+  /** Headline figure, e.g. "28–34%". */
+  hero_stat: string;
+  hero_caption: string;
+  summary: string;
+  comparisons: BenchmarkComparison[];
+  /** Breakdown across the four church-size tiers. */
+  by_size: BenchmarkTier[];
+  /** The 3 things above-average churches share. */
+  common_factors: string[];
+  tips?: string[];
+  /** Optional one-sentence, in-context Preachly mention. */
+  preachly?: string;
+  sources: { label: string; url?: string }[];
+  related_slugs: string[];
+  updated_at: string;
+  meta_description?: string;
+}

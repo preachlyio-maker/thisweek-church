@@ -402,7 +402,7 @@ export const SAMPLE_BENCHMARKS: BenchmarkStat[] = [
     context:
       "The church-world average. The churches beating it almost all share one habit — a personal follow-up within 48 hours.",
     source: "FACT Survey + reporting-church averages",
-    href: "/articles/why-first-time-visitors-dont-return",
+    href: "/benchmarks/first-time-visitor-return-rate",
   },
   {
     slug: "church-email-open-rate",
@@ -410,7 +410,7 @@ export const SAMPLE_BENCHMARKS: BenchmarkStat[] = [
     stat: "28–34%",
     context: "Well above the ~21% general nonprofit average — congregations actually open what their church sends.",
     source: "Mailchimp nonprofit + church comms benchmarks",
-    href: "/benchmarks",
+    href: "/benchmarks/email-open-rates",
   },
 ];
 
