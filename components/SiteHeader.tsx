@@ -43,8 +43,9 @@ export default function SiteHeader() {
             <div className="nav-links" style={{ display: "flex" }}>
             {[
               { href: "/trends", label: "Trends" },
-              { href: "/seasonal", label: "Seasonal" },
               { href: "/benchmarks", label: "Benchmarks" },
+              { href: "/articles", label: "Articles" },
+              { href: "/reads", label: "Reads" },
             ].map(({ href, label }) => (
               <Link
                 key={href}

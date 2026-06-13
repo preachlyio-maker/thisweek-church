@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { getArticles } from "@/lib/content";
 
 export const revalidate = 3600;
 
@@ -9,9 +10,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${base}/trends`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/articles`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${base}/reads`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/seasonal`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/benchmarks`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ];
+
+  // Article pages (live rows or sample fallback).
+  const articlePages: MetadataRoute.Sitemap = (await getArticles()).map((a) => ({
+    url: `${base}/articles/${a.slug}`,
+    lastModified: new Date(a.published_at),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
 
   try {
     const { createClient } = await import("@supabase/supabase-js");
@@ -34,8 +45,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-    return [...staticPages, ...trendPages];
+    return [...staticPages, ...articlePages, ...trendPages];
   } catch {
-    return staticPages;
+    return [...staticPages, ...articlePages];
   }
 }

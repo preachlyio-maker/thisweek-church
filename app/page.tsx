@@ -2,7 +2,12 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import TrendCard from "@/components/TrendCard";
 import PreachlyCTA from "@/components/PreachlyCtA";
+import SocialWall from "@/components/SocialWall";
+import BenchmarkSpotlight from "@/components/BenchmarkSpotlight";
+import BestReads from "@/components/BestReads";
+import EditorialFeed from "@/components/EditorialFeed";
 import { getLatestTrends } from "@/lib/trends";
+import { getArticles, getSocialPosts, getReads, getBenchmarkOfWeek } from "@/lib/content";
 import { format } from "date-fns";
 
 export const revalidate = 3600;
@@ -17,7 +22,13 @@ const CAT_LINKS = [
 ];
 
 export default async function HomePage() {
-  const trends = await getLatestTrends();
+  const [trends, articles, social, reads, benchmark] = await Promise.all([
+    getLatestTrends(),
+    getArticles(2),
+    getSocialPosts(),
+    getReads(6),
+    getBenchmarkOfWeek(),
+  ]);
   const weekOf = format(new Date(), "'Vol. 01 —' MMMM yyyy");
   const issueRange = format(new Date(), "MMMM d");
   const issueEnd = format(new Date(Date.now() + 6 * 86400000), "d, yyyy");
@@ -124,8 +135,20 @@ export default async function HomePage() {
             </div>
           )}
 
+          {/* Around the Church This Week — social wall */}
+          <SocialWall posts={social.posts} spotlight={social.spotlight} />
+
+          {/* Benchmark of the Week */}
+          <BenchmarkSpotlight benchmark={benchmark} />
+
+          {/* This Week's Best Reads */}
+          <BestReads reads={reads} />
+
+          {/* From Our Editorial Team */}
+          <EditorialFeed articles={articles} />
+
           {/* Category pills */}
-          <div style={{ padding: "20px 0 0", display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <div style={{ padding: "32px 0 0", display: "flex", gap: 8, flexWrap: "wrap" }}>
             {CAT_LINKS.map(({ href, label }) => (
               <a key={href} href={href} className="font-mono cat-pill" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", border: "1px solid #1A1A18", padding: "6px 14px", background: "transparent", color: "#1A1A18", textDecoration: "none" }}>
                 {label}

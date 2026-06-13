@@ -17,7 +17,7 @@ export default function SiteFooter() {
         {[
           {
             head: "Explore",
-            links: [{ href: "/trends", label: "All Trends" }, { href: "/seasonal", label: "Seasonal" }, { href: "/benchmarks", label: "Benchmarks" }],
+            links: [{ href: "/trends", label: "All Trends" }, { href: "/articles", label: "Articles" }, { href: "/reads", label: "Best Reads" }, { href: "/benchmarks", label: "Benchmarks" }, { href: "/seasonal", label: "Seasonal" }],
           },
           {
             head: "Preachly",

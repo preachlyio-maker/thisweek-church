@@ -47,3 +47,74 @@ export interface PipelineRun {
   errors: string[];
   summary: string;
 }
+
+// ---------- Editorial articles (2x daily) ----------
+
+export type ArticleType =
+  | "Data Dive"
+  | "Benchmark Spotlight"
+  | "Trend Report"
+  | "Community Spotlight"
+  | "Tool & Tactic"
+  | "Seasonal Prep";
+
+export interface Article {
+  id: string;
+  slug: string;
+  title: string;
+  type: ArticleType;
+  summary: string;
+  /** Plain text. Blank lines separate paragraphs; lines starting with "## " are subheads. */
+  body: string;
+  tags: string[];
+  related_slugs: string[];
+  featured_image_prompt?: string;
+  published_at: string;
+  status: TrendStatus;
+  meta_description?: string;
+}
+
+// ---------- "Around the Church This Week" social wall ----------
+
+export type SocialPlatform = "instagram" | "twitter" | "tiktok" | "youtube";
+
+export interface SocialPost {
+  id: string;
+  platform: SocialPlatform;
+  account_handle: string;
+  account_name?: string;
+  post_url: string;
+  thumbnail_url?: string;
+  caption_excerpt: string;
+  likes: number;
+  comments: number;
+  captured_at: string;
+  /** True for the single "Top Church Account to Follow This Week" spotlight. */
+  is_spotlight?: boolean;
+}
+
+// ---------- "Best Reads" — external content we high-five ----------
+
+export interface ExternalRead {
+  id: string;
+  source: string;
+  title: string;
+  url: string;
+  summary: string;
+  published_at: string;
+  relevance_score: number;
+  featured: boolean;
+}
+
+// ---------- Benchmark-of-the-week spotlight ----------
+
+export interface BenchmarkStat {
+  slug: string;
+  label: string;
+  /** The headline figure, e.g. "28–34%". */
+  stat: string;
+  /** One line of comparison/context. */
+  context: string;
+  source: string;
+  href: string;
+}
