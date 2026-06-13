@@ -205,12 +205,44 @@ function Manager({ spec, secret }: { spec: Spec; secret: string }) {
 
 export default function AdminConsole() {
   const [secret, setSecret] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshMsg, setRefreshMsg] = useState("");
+
+  async function refresh() {
+    if (!secret) { setRefreshMsg("Enter the admin secret first."); return; }
+    setRefreshing(true);
+    setRefreshMsg("");
+    try {
+      const res = await fetch("/api/admin/run-pipeline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ secret }),
+      });
+      const data = await res.json();
+      setRefreshMsg(res.ok ? "✓ Refresh started — the live site updates in about 1–2 minutes." : `✗ ${data.error}`);
+    } catch (e) {
+      setRefreshMsg(`✗ ${(e as Error).message}`);
+    }
+    setRefreshing(false);
+  }
 
   return (
     <div style={{ maxWidth: 720 }}>
-      <div style={{ marginBottom: 28 }}>
+      <div style={{ marginBottom: 24 }}>
         <label style={label}>Admin secret (enter once)</label>
         <input style={input} type="password" value={secret} onChange={(e) => setSecret(e.target.value)} autoComplete="off" placeholder="your ADMIN_SEED_SECRET" />
+      </div>
+
+      {/* One-button publish */}
+      <div style={{ border: "2px solid #5C7A5F", background: "#D8E8D8", padding: 20, marginBottom: 32, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+        <div>
+          <div className="font-type" style={{ fontSize: 18, color: "#1A1A18", marginBottom: 2 }}>Refresh the live site</div>
+          <div style={{ fontSize: 12, fontWeight: 300, color: "#3A6A3E" }}>Pulls the latest videos, reads &amp; articles, then updates the public pages. Run this after you add or remove anything.</div>
+          {refreshMsg && <div className="font-mono" style={{ fontSize: 11, marginTop: 8, color: refreshMsg.includes("✓") ? "#3A6A3E" : "#B0573F" }}>{refreshMsg}</div>}
+        </div>
+        <button onClick={refresh} disabled={refreshing} className="font-mono" style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", background: "#1A1A18", color: "#EDEBE4", border: "2px solid #1A1A18", padding: "14px 26px", cursor: refreshing ? "wait" : "pointer", whiteSpace: "nowrap" }}>
+          {refreshing ? "Starting…" : "Refresh site →"}
+        </button>
       </div>
 
       {SPECS.map((spec) => (
