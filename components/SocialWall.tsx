@@ -8,6 +8,12 @@ const PLATFORM_LABEL: Record<SocialPlatform, string> = {
   youtube: "YouTube",
 };
 
+function fmtCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1000)}K`;
+  return String(n);
+}
+
 /* ---------------- Watch This Week (videos) ---------------- */
 
 function VideoCard({ post }: { post: SocialPost }) {
@@ -64,9 +70,10 @@ function VideoCard({ post }: { post: SocialPost }) {
         <h3 className="font-type" style={{ fontSize: 15, lineHeight: 1.3, color: "#1A1A18", flex: 1 }}>
           {post.caption_excerpt}
         </h3>
-        <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578" }}>
-          Watch →
-        </span>
+        <div className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578", display: "flex", justifyContent: "space-between" }}>
+          <span>{post.likes > 0 ? `${fmtCount(post.likes)} views` : " "}</span>
+          <span>Watch →</span>
+        </div>
       </div>
     </a>
   );

@@ -224,52 +224,82 @@ function decodeEntities(s) {
 }
 
 async function fetchSocialPosts(ctx) {
-  // Auto-refreshes the YouTube video wall (kind="video"). Accounts and trending
-  // posts are curated via /admin/seed. Needs a free YouTube Data API key.
+  // Auto-refreshes the YouTube video wall (kind="video") with the MOST-VIEWED
+  // RECENT leadership videos — so the wall trends and feels fresh each week.
+  // Accounts + trending posts are curated via /admin/seed. Needs a YouTube key.
   if (!supabase) return;
   const key = process.env.YOUTUBE_API_KEY;
   if (!key) {
     console.log("  · YOUTUBE_API_KEY not set — skipping video refresh (seeded videos stay live)");
     return;
   }
-  const rows = [];
+
+  // 1) Gather candidate video IDs: most-viewed videos from the last 45 days
+  //    across the curated leadership channels.
+  const publishedAfter = new Date(Date.now() - 45 * 86400000).toISOString();
+  const candidates = new Map(); // videoId -> channelName
   for (const [name, channelId] of YT_CHANNELS) {
     try {
-      const url = `https://www.googleapis.com/youtube/v3/search?key=${key}&channelId=${channelId}&part=snippet&order=date&type=video&maxResults=2`;
+      const url =
+        `https://www.googleapis.com/youtube/v3/search?key=${key}&channelId=${channelId}` +
+        `&part=snippet&type=video&order=viewCount&maxResults=5&publishedAfter=${encodeURIComponent(publishedAfter)}`;
       const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       for (const it of json.items || []) {
-        const vid = it.id?.videoId;
-        if (!vid) continue;
-        const sn = it.snippet || {};
-        rows.push({
-          platform: "youtube",
-          kind: "video",
-          account_handle: channelId,
-          account_name: sn.channelTitle || name,
-          caption_excerpt: decodeEntities(sn.title || ""),
-          post_url: `https://www.youtube.com/watch?v=${vid}`,
-          thumbnail_url:
-            (sn.thumbnails?.high || sn.thumbnails?.medium || {}).url ||
-            `https://img.youtube.com/vi/${vid}/hqdefault.jpg`,
-          likes: 0,
-          comments: 0,
-          captured_at: new Date().toISOString(),
-        });
+        if (it.id?.videoId) candidates.set(it.id.videoId, name);
       }
-      console.log(`  · ${name}: ${(json.items || []).length} videos`);
+      console.log(`  · ${name}: ${(json.items || []).length} candidates`);
     } catch (err) {
       console.log(`  · ${name}: skipped (${err.message})`);
     }
   }
+  const ids = [...candidates.keys()];
+  if (ids.length === 0) return;
+
+  // 2) Pull real statistics (view/comment counts) for the candidates.
+  let rows = [];
+  try {
+    const statUrl =
+      `https://www.googleapis.com/youtube/v3/videos?key=${key}` +
+      `&part=snippet,statistics&id=${ids.slice(0, 50).join(",")}`;
+    const res = await fetch(statUrl, { signal: AbortSignal.timeout(15000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    rows = (json.items || []).map((it) => {
+      const sn = it.snippet || {};
+      const st = it.statistics || {};
+      return {
+        platform: "youtube",
+        kind: "video",
+        account_handle: sn.channelId || "youtube",
+        account_name: sn.channelTitle || candidates.get(it.id) || "",
+        caption_excerpt: decodeEntities(sn.title || ""),
+        post_url: `https://www.youtube.com/watch?v=${it.id}`,
+        thumbnail_url:
+          (sn.thumbnails?.high || sn.thumbnails?.medium || {}).url ||
+          `https://img.youtube.com/vi/${it.id}/hqdefault.jpg`,
+        likes: parseInt(st.viewCount || "0", 10), // we surface views in the "likes" column
+        comments: parseInt(st.commentCount || "0", 10),
+        captured_at: new Date().toISOString(),
+      };
+    });
+  } catch (err) {
+    console.log(`  · stats lookup failed (${err.message})`);
+    return;
+  }
+
+  // 3) Rank by views, keep the top 8.
+  rows.sort((a, b) => b.likes - a.likes);
+  rows = rows.slice(0, 8);
   if (rows.length === 0) return;
+
   // Replace just the video lane; leaves curated accounts/posts untouched.
   await supabase.from("social_posts").delete().eq("kind", "video");
   const { error } = await supabase.from("social_posts").insert(rows);
   if (error) throw new Error(error.message);
   ctx.changedPaths.add("/");
-  console.log(`  ✓ refreshed ${rows.length} videos`);
+  console.log(`  ✓ refreshed ${rows.length} trending videos`);
 }
 
 // Broad curated set of reputable church sources, skewed to PASTORS & LEADERSHIP.
