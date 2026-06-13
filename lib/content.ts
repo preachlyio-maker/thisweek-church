@@ -1,11 +1,6 @@
 import { supabase } from "./supabase";
 import { Article, SocialPost, ExternalRead, BenchmarkStat } from "./types";
-import {
-  SAMPLE_ARTICLES,
-  SAMPLE_SOCIAL_POSTS,
-  SAMPLE_READS,
-  pickBenchmarkOfWeek,
-} from "./sampleContent";
+import { SAMPLE_ARTICLES, pickBenchmarkOfWeek } from "./sampleContent";
 
 /**
  * Data access for editorial content (articles, social wall, external reads).
@@ -43,7 +38,8 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 // ------------------------------------------------------------- Social wall
 
 export async function getSocialPosts(): Promise<{ posts: SocialPost[]; spotlight: SocialPost | null }> {
-  let all: SocialPost[] = SAMPLE_SOCIAL_POSTS;
+  // No fabricated fallback — the wall shows only real rows, and hides when empty.
+  let all: SocialPost[] = [];
   try {
     const { data, error } = await supabase
       .from("social_posts")
@@ -51,7 +47,7 @@ export async function getSocialPosts(): Promise<{ posts: SocialPost[]; spotlight
       .order("captured_at", { ascending: false });
     if (!error && data && data.length > 0) all = data as SocialPost[];
   } catch {
-    /* fall back to sample */
+    /* leave empty */
   }
   const spotlight = all.find((p) => p.is_spotlight) ?? null;
   const posts = all.filter((p) => !p.is_spotlight);
@@ -61,7 +57,8 @@ export async function getSocialPosts(): Promise<{ posts: SocialPost[]; spotlight
 // ------------------------------------------------------------- Best reads
 
 export async function getReads(limit = 6): Promise<ExternalRead[]> {
-  let all: ExternalRead[] = SAMPLE_READS;
+  // No fabricated fallback — only real rows; the section hides when empty.
+  let all: ExternalRead[] = [];
   try {
     const { data, error } = await supabase
       .from("external_reads")
@@ -69,7 +66,7 @@ export async function getReads(limit = 6): Promise<ExternalRead[]> {
       .order("published_at", { ascending: false });
     if (!error && data && data.length > 0) all = data as ExternalRead[];
   } catch {
-    /* fall back to sample */
+    /* leave empty */
   }
   // Featured first, then most recent.
   return [...all].sort((a, b) => Number(b.featured) - Number(a.featured)).slice(0, limit);
