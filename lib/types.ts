@@ -78,9 +78,13 @@ export interface Article {
 
 export type SocialPlatform = "instagram" | "twitter" | "tiktok" | "youtube";
 
+/** Which lane a row belongs to on the social wall. Defaults to "post". */
+export type SocialKind = "video" | "post" | "account";
+
 export interface SocialPost {
   id: string;
   platform: SocialPlatform;
+  kind?: SocialKind;
   account_handle: string;
   account_name?: string;
   post_url: string;
@@ -89,7 +93,7 @@ export interface SocialPost {
   likes: number;
   comments: number;
   captured_at: string;
-  /** True for the single "Top Church Account to Follow This Week" spotlight. */
+  /** Legacy flag, no longer used by the wall. */
   is_spotlight?: boolean;
 }
 

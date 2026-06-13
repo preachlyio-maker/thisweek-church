@@ -33,3 +33,5 @@ jobs:
           # Optional: set repo variable ARTICLE_AUTOPUBLISH=true to publish AI
           # articles immediately. Left unset = saved as drafts for your review.
           ARTICLE_AUTOPUBLISH: ${{ vars.ARTICLE_AUTOPUBLISH }}
+          # Optional: enables the auto-refreshing YouTube video wall.
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}

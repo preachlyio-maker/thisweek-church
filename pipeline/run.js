@@ -208,12 +208,68 @@ async function fetchCommsTrends(ctx) {
   await upsertTrend(TREND_SEEDS.comms, ctx);
 }
 
+// Leadership/preaching YouTube channels for the "Watch This Week" wall.
+const YT_CHANNELS = [
+  ["The Gospel Coalition", "UCQMwm-DeHyFK5VPp6KySR5Q"],
+  ["Life.Church Open Network", "UCGDGRcOQeYgcHcGl0xUoTSQ"],
+  ["Andy Stanley", "UCZWmksterrOcTNh1ljvs6Hg"],
+];
+
+function decodeEntities(s) {
+  return s
+    .replace(/&amp;/g, "&")
+    .replace(/&#39;|&#x27;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n));
+}
+
 async function fetchSocialPosts(ctx) {
-  // TODO: Instagram Basic Display / X / YouTube APIs -> social_posts table.
-  // No social source configured yet — skip cleanly so the site keeps its
-  // curated sample wall.
-  console.log("  · no social API configured — skipping (sample wall stays live)");
-  void ctx;
+  // Auto-refreshes the YouTube video wall (kind="video"). Accounts and trending
+  // posts are curated via /admin/seed. Needs a free YouTube Data API key.
+  if (!supabase) return;
+  const key = process.env.YOUTUBE_API_KEY;
+  if (!key) {
+    console.log("  · YOUTUBE_API_KEY not set — skipping video refresh (seeded videos stay live)");
+    return;
+  }
+  const rows = [];
+  for (const [name, channelId] of YT_CHANNELS) {
+    try {
+      const url = `https://www.googleapis.com/youtube/v3/search?key=${key}&channelId=${channelId}&part=snippet&order=date&type=video&maxResults=2`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      for (const it of json.items || []) {
+        const vid = it.id?.videoId;
+        if (!vid) continue;
+        const sn = it.snippet || {};
+        rows.push({
+          platform: "youtube",
+          kind: "video",
+          account_handle: channelId,
+          account_name: sn.channelTitle || name,
+          caption_excerpt: decodeEntities(sn.title || ""),
+          post_url: `https://www.youtube.com/watch?v=${vid}`,
+          thumbnail_url:
+            (sn.thumbnails?.high || sn.thumbnails?.medium || {}).url ||
+            `https://img.youtube.com/vi/${vid}/hqdefault.jpg`,
+          likes: 0,
+          comments: 0,
+          captured_at: new Date().toISOString(),
+        });
+      }
+      console.log(`  · ${name}: ${(json.items || []).length} videos`);
+    } catch (err) {
+      console.log(`  · ${name}: skipped (${err.message})`);
+    }
+  }
+  if (rows.length === 0) return;
+  // Replace just the video lane; leaves curated accounts/posts untouched.
+  await supabase.from("social_posts").delete().eq("kind", "video");
+  const { error } = await supabase.from("social_posts").insert(rows);
+  if (error) throw new Error(error.message);
+  ctx.changedPaths.add("/");
+  console.log(`  ✓ refreshed ${rows.length} videos`);
 }
 
 // Broad curated set of reputable church sources, skewed to PASTORS & LEADERSHIP.

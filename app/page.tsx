@@ -135,8 +135,8 @@ export default async function HomePage() {
             </div>
           )}
 
-          {/* Around the Church This Week — social wall */}
-          <SocialWall posts={social.posts} spotlight={social.spotlight} />
+          {/* Around the Church This Week — YouTube wall, trending, accounts */}
+          <SocialWall videos={social.videos} posts={social.posts} accounts={social.accounts} />
 
           {/* Benchmark of the Week */}
           <BenchmarkSpotlight benchmark={benchmark} />

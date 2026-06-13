@@ -37,8 +37,12 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 
 // ------------------------------------------------------------- Social wall
 
-export async function getSocialPosts(): Promise<{ posts: SocialPost[]; spotlight: SocialPost | null }> {
-  // No fabricated fallback — the wall shows only real rows, and hides when empty.
+export async function getSocialPosts(): Promise<{
+  videos: SocialPost[];
+  posts: SocialPost[];
+  accounts: SocialPost[];
+}> {
+  // No fabricated fallback — each lane shows only real rows, and hides when empty.
   let all: SocialPost[] = [];
   try {
     const { data, error } = await supabase
@@ -49,9 +53,8 @@ export async function getSocialPosts(): Promise<{ posts: SocialPost[]; spotlight
   } catch {
     /* leave empty */
   }
-  const spotlight = all.find((p) => p.is_spotlight) ?? null;
-  const posts = all.filter((p) => !p.is_spotlight);
-  return { posts, spotlight };
+  const byKind = (k: SocialPost["kind"]) => all.filter((p) => (p.kind ?? "post") === k);
+  return { videos: byKind("video"), posts: byKind("post"), accounts: byKind("account") };
 }
 
 // ------------------------------------------------------------- Best reads
