@@ -63,9 +63,12 @@ export async function getSocialPosts(): Promise<{
       return true;
     });
   };
+  // Hard rule: never more than one piece of content from the same church in a
+  // lane — dedupe by the account/channel handle (keeps the first = freshest).
+  const byChurch = (p: SocialPost) => (p.account_name || p.account_handle || "").toLowerCase().trim();
   return {
-    videos: dedupe(byKind("video"), (p) => p.post_url),
-    posts: dedupe(byKind("post"), (p) => p.post_url),
+    videos: dedupe(byKind("video"), byChurch),
+    posts: dedupe(byKind("post"), byChurch),
     accounts: dedupe(byKind("account"), (p) => `${p.platform}:${p.account_handle.toLowerCase()}`),
   };
 }

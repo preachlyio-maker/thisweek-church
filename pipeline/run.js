@@ -214,19 +214,22 @@ async function fetchCommsTrends(ctx) {
 // more anytime via /admin (kind="channel"). We grab each channel's latest
 // videos so the wall stays fresh.
 
-// Verified real church channels (channel IDs). Not megachurches.
+// Verified real church channels (channel IDs). Deliberately NOT the megachurches.
+// Add more anytime via /admin → "Church video channels".
 const CHURCH_CHANNEL_IDS = [
   "UCtz0YBcGrFT0bLbNKA-bp9A", // Reality SF
   "UCuIa7xIvcRIPqCBpu_Lz9jg", // The Austin Stone (Austin, TX)
   "UCfRdrDkfrdwbkekjFGhedcg", // Church of the City New York
   "UCtsi33WCfZd0n9CmK_rUAfA", // Menlo Church (Bay Area)
   "UCz9PqE5Qr9avopAPkfCZcSQ", // Mosaic (Los Angeles)
+  "UCTZP74GSkSRyPx4Vmlr__sw", // Mariners Church (Irvine, CA)
+  "UC-SIZeefaLzZc422nBYlmag", // Sandals Church (Riverside, CA)
 ];
 
 // Always surface this one (resolved from @handle at runtime).
 const MUST_INCLUDE_HANDLES = ["GraceChurchFL"]; // Grace Church Orlando
 
-const MAX_PER_CHANNEL = 2; // up to 2 per church — fills the wall while staying varied
+const MAX_PER_CHANNEL = 1; // RULE: never more than one video per church on the page
 const WALL_SIZE = 12;
 
 // Keep the wall brand-safe — drop sensational / reaction / off-topic titles.
