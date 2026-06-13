@@ -209,25 +209,24 @@ async function fetchCommsTrends(ctx) {
 }
 
 // --- "Videos We Love This Week" sourcing -----------------------------------
-// A warm, varied mix of churches of ALL sizes from across the country — and
-// deliberately NOT the usual megachurches. We search broadly, then EXCLUDE
-// channels above a subscriber ceiling so smaller/regional churches surface.
+// ONLY pulls from a curated list of real church channels (no keyword search —
+// that scraped up junk). Verified small/mid churches across the country; add
+// more anytime via /admin (kind="channel"). We grab each channel's latest
+// videos so the wall stays fresh.
 
-const VIDEO_SEARCH_QUERIES = [
-  "sunday sermon", "worship", "church service", "small church", "bible teaching", "preaching",
+// Verified real church channels (channel IDs). Not megachurches.
+const CHURCH_CHANNEL_IDS = [
+  "UCtz0YBcGrFT0bLbNKA-bp9A", // Reality SF
+  "UCuIa7xIvcRIPqCBpu_Lz9jg", // The Austin Stone (Austin, TX)
+  "UCfRdrDkfrdwbkekjFGhedcg", // Church of the City New York
+  "UCtsi33WCfZd0n9CmK_rUAfA", // Menlo Church (Bay Area)
+  "UCz9PqE5Qr9avopAPkfCZcSQ", // Mosaic (Los Angeles)
 ];
 
 // Always surface this one (resolved from @handle at runtime).
-const MUST_INCLUDE_HANDLES = ["GraceChurchFL"];
+const MUST_INCLUDE_HANDLES = ["GraceChurchFL"]; // Grace Church Orlando
 
-// No megachurch anchors — the whole point is to spread the love.
-const ANCHOR_CHANNEL_IDS = [];
-
-// Exclude channels bigger than this (the megachurches). Keeps it to
-// small/mid churches. Force-included handles bypass this.
-const MAX_SUBSCRIBERS = 250000;
-
-const MAX_PER_CHANNEL = 1; // one video per channel — keeps the wall varied
+const MAX_PER_CHANNEL = 2; // up to 2 per church — fills the wall while staying varied
 const WALL_SIZE = 12;
 
 // Keep the wall brand-safe — drop sensational / reaction / off-topic titles.
@@ -264,8 +263,8 @@ async function resolveHandle(handle, key) {
 }
 
 async function fetchSocialPosts(ctx) {
-  // Auto-refreshes the YouTube video wall (kind="video") with the most-viewed
-  // recent church videos from across YouTube, plus must-include channels.
+  // Auto-refreshes the YouTube video wall (kind="video") with the latest videos
+  // from a CURATED list of real church channels only — no keyword search.
   if (!supabase) return;
   const key = process.env.YOUTUBE_API_KEY;
   if (!key) {
@@ -273,43 +272,38 @@ async function fetchSocialPosts(ctx) {
     return;
   }
 
-  const recent30 = new Date(Date.now() - 30 * 86400000).toISOString();
-  const recent60 = new Date(Date.now() - 60 * 86400000).toISOString();
   const candidates = new Set();
-  const forceIds = new Set(); // videos we always include (Grace Church etc.)
+  const forceIds = new Set(); // videos from must-include channels (Grace etc.)
 
-  // 1) Broad, view-ranked search across all of YouTube.
-  for (const q of VIDEO_SEARCH_QUERIES) {
-    try {
-      const json = await ytJson(
-        ytUrl("search", {
-          part: "snippet", q, type: "video", order: "viewCount",
-          publishedAfter: recent30, maxResults: 10, regionCode: "US",
-          relevanceLanguage: "en", safeSearch: "strict",
-        }, key)
-      );
-      for (const it of json.items || []) if (it.id?.videoId) candidates.add(it.id.videoId);
-      console.log(`  · search "${q}": ${(json.items || []).length}`);
-    } catch (err) {
-      console.log(`  · search "${q}": skipped (${err.message})`);
-    }
-  }
-
-  // 2) Anchor channels + must-include handles (Grace Church FL).
-  const includeIds = [...ANCHOR_CHANNEL_IDS];
+  // 1) Assemble the channel list: curated code list + must-include handles +
+  //    any channels added via /admin (kind="channel").
+  const channelIds = new Set(CHURCH_CHANNEL_IDS);
   const forcedChannels = new Set();
   for (const h of MUST_INCLUDE_HANDLES) {
     const id = await resolveHandle(h, key);
     console.log(`  · @${h} -> ${id || "not found"}`);
-    if (id) { includeIds.push(id); forcedChannels.add(id); }
+    if (id) { channelIds.add(id); forcedChannels.add(id); }
   }
-  for (const channelId of includeIds) {
+  try {
+    const { data } = await supabase.from("social_posts").select("account_handle").eq("kind", "channel");
+    for (const row of data || []) {
+      const raw = (row.account_handle || "").trim().replace(/^@/, "");
+      if (!raw) continue;
+      if (/^UC[\w-]{20,}$/.test(raw)) channelIds.add(raw);
+      else {
+        const id = await resolveHandle(raw, key);
+        if (id) channelIds.add(id);
+      }
+    }
+  } catch {
+    /* no custom channels */
+  }
+
+  // 2) Pull each channel's latest videos.
+  for (const channelId of channelIds) {
     try {
       const json = await ytJson(
-        ytUrl("search", {
-          part: "snippet", channelId, type: "video", order: "viewCount",
-          publishedAfter: recent60, maxResults: 3,
-        }, key)
+        ytUrl("search", { part: "snippet", channelId, type: "video", order: "date", maxResults: 3 }, key)
       );
       for (const it of json.items || []) {
         if (!it.id?.videoId) continue;
@@ -336,24 +330,9 @@ async function fetchSocialPosts(ctx) {
   }
   if (items.length === 0) return;
 
-  // 3b) Look up channel sizes so we can exclude the megachurches.
-  const channelIds = [...new Set(items.map((it) => it.snippet?.channelId).filter(Boolean))];
-  const subsByChannel = {};
-  for (let i = 0; i < channelIds.length; i += 50) {
-    try {
-      const json = await ytJson(ytUrl("channels", { part: "statistics", id: channelIds.slice(i, i + 50).join(",") }, key));
-      for (const ch of json.items || []) {
-        subsByChannel[ch.id] = parseInt(ch.statistics?.subscriberCount || "0", 10);
-      }
-    } catch (err) {
-      console.log(`  · channel stats skipped (${err.message})`);
-    }
-  }
-
-  // 4) Build rows: drop sensational titles and megachurch-sized channels.
+  // 4) Build rows, dropping only sensational/off-topic titles.
   const rows = items
     .filter((it) => !TITLE_BLOCK.test(it.snippet?.title || ""))
-    .filter((it) => forceIds.has(it.id) || (subsByChannel[it.snippet?.channelId] || 0) <= MAX_SUBSCRIBERS)
     .map((it) => {
       const sn = it.snippet || {};
       const st = it.statistics || {};
@@ -395,7 +374,7 @@ async function fetchSocialPosts(ctx) {
   const { error } = await supabase.from("social_posts").insert(finalRows);
   if (error) throw new Error(error.message);
   ctx.changedPaths.add("/");
-  console.log(`  ✓ refreshed ${finalRows.length} trending videos`);
+  console.log(`  ✓ refreshed ${finalRows.length} church videos`);
 }
 
 // Broad curated set of reputable church sources, skewed to PASTORS & LEADERSHIP.

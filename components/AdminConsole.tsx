@@ -8,6 +8,7 @@ type Field = {
   type?: "text" | "url" | "select" | "textarea";
   options?: string[];
   placeholder?: string;
+  optional?: boolean;
 };
 
 type Spec = {
@@ -23,6 +24,20 @@ type Spec = {
 };
 
 const SPECS: Spec[] = [
+  {
+    key: "channels",
+    title: "Church video channels (the video wall sources)",
+    blurb: "Add real church YouTube channels — the \"Videos We Love\" wall pulls their latest videos automatically each day. Paste a @handle or a channel ID (UC…).",
+    table: "social_posts",
+    fixed: { kind: "channel", platform: "youtube", post_url: "https://www.youtube.com" },
+    kindFilter: "channel",
+    fields: [
+      { name: "account_handle", label: "Channel @handle or ID", placeholder: "GraceChurchFL  (or UCxxxxxxxx…)" },
+      { name: "account_name", label: "Church name (optional)", placeholder: "Grace Church Orlando", optional: true },
+    ],
+    primary: (r) => r.account_name || `@${r.account_handle}`,
+    secondary: (r) => r.account_handle,
+  },
   {
     key: "accounts",
     title: "Accounts to follow",
@@ -153,7 +168,7 @@ function Manager({ spec, secret }: { spec: Spec; secret: string }) {
             ) : f.type === "textarea" ? (
               <textarea style={{ ...input, resize: "vertical" }} rows={3} value={form[f.name] || ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} placeholder={f.placeholder} />
             ) : (
-              <input style={input} type={f.type === "url" ? "url" : "text"} value={form[f.name] || ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} placeholder={f.placeholder} required />
+              <input style={input} type={f.type === "url" ? "url" : "text"} value={form[f.name] || ""} onChange={(e) => setForm({ ...form, [f.name]: e.target.value })} placeholder={f.placeholder} required={!f.optional} />
             )}
           </div>
         ))}
