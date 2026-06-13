@@ -10,7 +10,8 @@ import { Article, SocialPost, ExternalRead, BenchmarkStat } from "./types";
  * pieces genuinely about digital engagement / comms / sermon distribution.
  */
 
-const D = (iso: string) => `2026-06-${iso}T11:00:00.000Z`;
+// Day must be zero-padded — "2026-06-9" is not valid ISO 8601 and parses to Invalid Date.
+const D = (day: string | number) => `2026-06-${String(day).padStart(2, "0")}T11:00:00.000Z`;
 
 // ---------------------------------------------------------------- Articles
 
