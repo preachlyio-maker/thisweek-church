@@ -22,64 +22,33 @@ function VideoCard({ post }: { post: SocialPost }) {
       href={post.post_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="social-card"
-      style={{
-        textDecoration: "none",
-        borderRight: "2px solid #1A1A18",
-        borderBottom: "2px solid #1A1A18",
-        background: "#EDEBE4",
-        display: "flex",
-        flexDirection: "column",
-      }}
+      className="media-card"
+      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", display: "flex", flexDirection: "column" }}
     >
-      <div style={{ position: "relative", borderBottom: "2px solid #1A1A18" }}>
-        {post.thumbnail_url ? (
+      <div className="media-thumb-wrap" style={{ borderBottom: "2px solid #1A1A18", aspectRatio: "16 / 9", background: "#1A1A18" }}>
+        {post.thumbnail_url && (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={post.thumbnail_url}
-            alt=""
-            loading="lazy"
-            style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", display: "block" }}
-          />
-        ) : (
-          <div style={{ width: "100%", aspectRatio: "16 / 9", background: "#1A1A18" }} />
+          <img className="media-thumb" src={post.thumbnail_url} alt="" loading="lazy" style={{ height: "100%", objectFit: "cover" }} />
         )}
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            bottom: 10,
-            left: 10,
-            width: 34,
-            height: 34,
-            background: "rgba(26,26,24,0.85)",
-            color: "#EDEBE4",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 13,
-          }}
-        >
-          ▶
-        </span>
+        <span className="media-play" aria-hidden>▶</span>
+        {post.likes > 0 && <span className="media-badge">{fmtCount(post.likes)} views</span>}
       </div>
       <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
-        <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
+        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
           {PLATFORM_LABEL[post.platform]}{post.account_name ? ` · ${post.account_name}` : ""}
         </span>
-        <h3 className="font-type" style={{ fontSize: 15, lineHeight: 1.3, color: "#1A1A18", flex: 1 }}>
+        <h3 className="media-title font-type line-clamp-2" style={{ fontSize: 15, lineHeight: 1.3, color: "#1A1A18", flex: 1 }}>
           {post.caption_excerpt}
         </h3>
-        <div className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578", display: "flex", justifyContent: "space-between" }}>
-          <span>{post.likes > 0 ? `${fmtCount(post.likes)} views` : " "}</span>
-          <span>Watch →</span>
-        </div>
+        <span className="media-foot font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578" }}>
+          Watch →
+        </span>
       </div>
     </a>
   );
 }
 
-/* ---------------- Trending posts ---------------- */
+/* ---------------- Trending posts (TikTok / IG / X) ---------------- */
 
 function PostCard({ post }: { post: SocialPost }) {
   return (
@@ -87,40 +56,29 @@ function PostCard({ post }: { post: SocialPost }) {
       href={post.post_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="social-card"
-      style={{
-        textDecoration: "none",
-        borderRight: "2px solid #1A1A18",
-        borderBottom: "2px solid #1A1A18",
-        background: "#EDEBE4",
-        display: "flex",
-        flexDirection: "column",
-      }}
+      className="media-card"
+      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", display: "flex", flexDirection: "column" }}
     >
       {post.thumbnail_url && (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={post.thumbnail_url}
-          alt=""
-          loading="lazy"
-          style={{ width: "100%", aspectRatio: "4 / 5", objectFit: "cover", display: "block", borderBottom: "2px solid #1A1A18" }}
-        />
-      )}
-      <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 10, flex: 1, minHeight: post.thumbnail_url ? 0 : 150 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
-            {PLATFORM_LABEL[post.platform]}
-          </span>
-          {(post.likes > 0 || post.comments > 0) && (
-            <span className="font-mono" style={{ fontSize: 9, color: "#8A8578" }}>
-              ♥ {fmtCount(post.likes)}{post.comments > 0 ? ` · ${fmtCount(post.comments)} 💬` : ""}
-            </span>
-          )}
+        <div className="media-thumb-wrap" style={{ borderBottom: "2px solid #1A1A18", aspectRatio: "4 / 5", background: "#1A1A18" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="media-thumb" src={post.thumbnail_url} alt="" loading="lazy" style={{ height: "100%", objectFit: "cover" }} />
+          <span className="media-play" aria-hidden>▶</span>
+          {post.likes > 0 && <span className="media-badge">♥ {fmtCount(post.likes)}</span>}
         </div>
-        <p style={{ fontSize: 12.5, fontWeight: 300, color: "#2A2A28", lineHeight: 1.55, flex: 1 }}>{post.caption_excerpt}</p>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span className="font-mono" style={{ fontSize: 9, color: "#1A1A18" }}>@{post.account_handle}</span>
-          <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578" }}>View →</span>
+      )}
+      <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 10, flex: 1, minHeight: post.thumbnail_url ? 0 : 150 }}>
+        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
+          {PLATFORM_LABEL[post.platform]}
+        </span>
+        {post.caption_excerpt && (
+          <p className="media-title line-clamp-2" style={{ fontSize: 12.5, fontWeight: 300, color: "#2A2A28", lineHeight: 1.55, flex: 1 }}>
+            {post.caption_excerpt}
+          </p>
+        )}
+        <div className="media-foot font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578", display: "flex", justifyContent: "space-between" }}>
+          <span>@{post.account_handle}</span>
+          <span>View →</span>
         </div>
       </div>
     </a>
@@ -135,29 +93,19 @@ function AccountCard({ post }: { post: SocialPost }) {
       href={post.post_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="social-card"
-      style={{
-        textDecoration: "none",
-        borderRight: "2px solid #1A1A18",
-        borderBottom: "2px solid #1A1A18",
-        background: "#EDEBE4",
-        padding: 18,
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        minHeight: 120,
-      }}
+      className="media-card"
+      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: 18, display: "flex", flexDirection: "column", gap: 8, minHeight: 120 }}
     >
-      <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8A8578" }}>
+      <span className="media-foot font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8A8578" }}>
         {PLATFORM_LABEL[post.platform]}
       </span>
-      <div className="font-type" style={{ fontSize: 17, lineHeight: 1.2, color: "#1A1A18" }}>
+      <div className="media-title font-type" style={{ fontSize: 17, lineHeight: 1.2, color: "#1A1A18" }}>
         {post.account_name || `@${post.account_handle}`}
       </div>
       {post.caption_excerpt && (
-        <p style={{ fontSize: 12, fontWeight: 300, color: "#5A5850", lineHeight: 1.5, flex: 1 }}>{post.caption_excerpt}</p>
+        <p className="media-title" style={{ fontSize: 12, fontWeight: 300, color: "#5A5850", lineHeight: 1.5, flex: 1 }}>{post.caption_excerpt}</p>
       )}
-      <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", marginTop: "auto" }}>
+      <span className="media-channel font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", marginTop: "auto" }}>
         Follow →
       </span>
     </a>

@@ -227,7 +227,7 @@ const ANCHOR_CHANNEL_IDS = [
   "UCYv-siSKd3Gn9IsliO95gIw", // Transformation Church
 ];
 
-const MAX_PER_CHANNEL = 2;
+const MAX_PER_CHANNEL = 1; // one video per channel — keeps the wall varied
 const WALL_SIZE = 12;
 
 // Keep the wall brand-safe — drop sensational / reaction / off-topic titles.

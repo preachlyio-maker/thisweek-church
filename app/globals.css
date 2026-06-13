@@ -92,6 +92,28 @@ body { min-height: 100vh; }
 .read-row { transition: background 0.15s; }
 .read-row:hover { background: #E4E1D8; }
 
+/* Modern media cards (video / trending) */
+.media-card { background: #EDEBE4; transition: background 0.2s; }
+.media-card:hover { background: #1A1A18; }
+.media-card:hover .media-channel { color: #5C7A5F !important; }
+.media-card:hover .media-title { color: #EDEBE4 !important; }
+.media-card:hover .media-foot { color: #8A8578 !important; }
+.media-thumb-wrap { position: relative; overflow: hidden; }
+.media-thumb { display: block; width: 100%; transition: transform 0.45s ease; }
+.media-card:hover .media-thumb { transform: scale(1.07); }
+.media-badge {
+  position: absolute; bottom: 8px; right: 8px;
+  background: rgba(26,24,24,0.86); color: #EDEBE4;
+  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.04em;
+  padding: 3px 7px;
+}
+.media-play {
+  position: absolute; top: 8px; left: 8px;
+  width: 30px; height: 30px; background: rgba(26,24,24,0.78); color: #EDEBE4;
+  display: flex; align-items: center; justify-content: center; font-size: 11px;
+}
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
 .rule { border: none; border-top: 1px solid var(--rule); }
 
 /* The one-paragraph site summary AI engines tend to lift verbatim. */
