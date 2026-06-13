@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import SeedForm from "@/components/SeedForm";
+import AdminConsole from "@/components/AdminConsole";
 
 export const metadata: Metadata = {
   title: "Seed",
@@ -19,15 +19,15 @@ export default function AdminSeedPage() {
             Admin · manual seed
           </p>
           <h1 className="font-type hero-h1" style={{ fontSize: 48, lineHeight: 1.05, color: "#1A1A18", marginBottom: 16, maxWidth: 720 }}>
-            Paste data, keep the site fed
+            Manage your content
           </h1>
           <p style={{ fontSize: 14, fontWeight: 300, color: "#5A5850", lineHeight: 1.7, maxWidth: 560 }}>
-            A stop-gap while the live sources are wired up. Pick a table, paste rows of JSON, enter the admin secret, and write straight to the database. Trends and articles upsert by <code>slug</code>; social posts and reads insert new rows.
+            Enter your admin secret once, then add or remove accounts, trending posts, and featured reads with simple fields — no JSON. Each &quot;Add&quot; appends one entry; the &quot;✕&quot; deletes one. Click &quot;Show existing&quot; to see what&apos;s live.
           </p>
         </section>
 
         <div style={{ padding: "32px 0 48px" }}>
-          <SeedForm />
+          <AdminConsole />
         </div>
       </main>
       <SiteFooter />
