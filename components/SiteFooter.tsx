@@ -10,8 +10,8 @@ export default function SiteFooter() {
           </span>
           <p style={{ fontSize: 12, fontWeight: 300, color: "#8A8578", lineHeight: 1.6 }}>
             America&apos;s weekly church data hub — worship, sermons, giving, attendance, and engagement, updated every
-            Monday. Powered by{" "}
-            <a href="https://preachly.io" style={{ color: "#5C7A5F" }}>preachly.io</a>.
+            Monday. Compiled from CCLI, YouVersion, Barna, Pushpay, and the{" "}
+            <a href="https://preachly.io" style={{ color: "#5C7A5F" }}>preachly.io</a> church network.
           </p>
         </div>
 
@@ -40,10 +40,10 @@ export default function SiteFooter() {
 
       <div style={{ borderTop: "1px solid #C8C4B8", padding: "14px 28px", maxWidth: 1060, margin: "0 auto", display: "flex", justifyContent: "space-between" }}>
         <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", color: "#B8B4A8", textTransform: "uppercase" }}>
-          Data updated weekly · © {new Date().getFullYear()} preachly.io
+          Data updated weekly · © {new Date().getFullYear()} This Week · Church
         </span>
         <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", color: "#B8B4A8", textTransform: "uppercase" }}>
-          Generated with Claude AI
+          Cited from primary sources
         </span>
       </div>
     </footer>

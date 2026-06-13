@@ -93,27 +93,35 @@ function PostCard({ post }: { post: SocialPost }) {
         borderRight: "2px solid #1A1A18",
         borderBottom: "2px solid #1A1A18",
         background: "#EDEBE4",
-        padding: 20,
         display: "flex",
         flexDirection: "column",
-        gap: 12,
-        minHeight: 150,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
-          {PLATFORM_LABEL[post.platform]}
-        </span>
-        {(post.likes > 0 || post.comments > 0) && (
-          <span className="font-mono" style={{ fontSize: 9, color: "#8A8578" }}>
-            ♥ {post.likes.toLocaleString()}
+      {post.thumbnail_url && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={post.thumbnail_url}
+          alt=""
+          loading="lazy"
+          style={{ width: "100%", aspectRatio: "4 / 5", objectFit: "cover", display: "block", borderBottom: "2px solid #1A1A18" }}
+        />
+      )}
+      <div style={{ padding: 18, display: "flex", flexDirection: "column", gap: 10, flex: 1, minHeight: post.thumbnail_url ? 0 : 150 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
+            {PLATFORM_LABEL[post.platform]}
           </span>
-        )}
-      </div>
-      <p style={{ fontSize: 12.5, fontWeight: 300, color: "#2A2A28", lineHeight: 1.55, flex: 1 }}>{post.caption_excerpt}</p>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span className="font-mono" style={{ fontSize: 9, color: "#1A1A18" }}>@{post.account_handle}</span>
-        <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578" }}>View →</span>
+          {(post.likes > 0 || post.comments > 0) && (
+            <span className="font-mono" style={{ fontSize: 9, color: "#8A8578" }}>
+              ♥ {fmtCount(post.likes)}{post.comments > 0 ? ` · ${fmtCount(post.comments)} 💬` : ""}
+            </span>
+          )}
+        </div>
+        <p style={{ fontSize: 12.5, fontWeight: 300, color: "#2A2A28", lineHeight: 1.55, flex: 1 }}>{post.caption_excerpt}</p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span className="font-mono" style={{ fontSize: 9, color: "#1A1A18" }}>@{post.account_handle}</span>
+          <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578" }}>View →</span>
+        </div>
       </div>
     </a>
   );

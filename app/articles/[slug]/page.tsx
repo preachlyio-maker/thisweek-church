@@ -110,8 +110,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         {/* Provenance — runs on every article */}
         <div style={{ borderTop: "1px solid var(--rule)", borderBottom: "1px solid var(--rule)", padding: "18px 0", margin: "0 0 32px" }}>
           <p style={{ fontSize: "0.82rem", fontWeight: 300, lineHeight: 1.7, color: "var(--muted)", margin: 0 }}>
-            Data in this article is sourced from the preachly.io church network and publicly available ministry research.
-            thisweek.church is published by preachly.io — church communication tools used by ministry teams across America.
+            Data in this article is drawn from primary church-data sources — including CCLI, YouVersion, Barna, Pushpay,
+            and the preachly.io church network. thisweek.church aggregates and publishes it weekly, with every figure
+            traceable to its source.
           </p>
         </div>
 

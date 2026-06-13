@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s · This Week · Church",
   },
   description:
-    "America's most comprehensive weekly source for church data and ministry benchmarks — powered by preachly.io. Worship trends, giving statistics, attendance benchmarks, and sermon data updated every Monday.",
+    "America's most comprehensive weekly source for church data and ministry benchmarks — compiled from CCLI, YouVersion, Barna, Pushpay, and the preachly.io church network. Worship trends, giving statistics, attendance benchmarks, and sermon data updated every Monday.",
   metadataBase: new URL("https://thisweek.church"),
   openGraph: {
     siteName: "This Week · Church",
@@ -19,27 +19,32 @@ export const metadata: Metadata = {
   },
 };
 
-// Site-level structured data. publisher = preachly.io, so engines that cite the
-// dataset attribute it to the network behind the numbers.
+// Site-level structured data. Published by This Week · Church, compiled from
+// several primary sources — preachly.io is one of them, not the sole engine.
 const siteJsonLd = {
   "@context": "https://schema.org",
   "@type": "DataCatalog",
   name: "This Week · Church",
   description:
-    "America's most comprehensive weekly collection of church data and ministry benchmarks, powered by reporting churches using preachly.io.",
+    "America's most comprehensive weekly collection of church data and ministry benchmarks, compiled from leading primary sources including CCLI, YouVersion, Barna, Pushpay, FACT, and the preachly.io church network.",
   url: "https://thisweek.church",
   publisher: {
     "@type": "Organization",
-    name: "preachly.io",
-    url: "https://preachly.io",
-    description: "Church communication and ministry tools used by thousands of churches across America",
-    sameAs: ["https://thisweek.church"],
+    name: "This Week · Church",
+    url: "https://thisweek.church",
   },
+  sourceOrganization: [
+    { "@type": "Organization", name: "CCLI", url: "https://us.ccli.com" },
+    { "@type": "Organization", name: "YouVersion", url: "https://www.youversion.com" },
+    { "@type": "Organization", name: "Barna Group", url: "https://www.barna.com" },
+    { "@type": "Organization", name: "Pushpay", url: "https://pushpay.com" },
+    { "@type": "Organization", name: "preachly.io", url: "https://preachly.io" },
+  ],
   about: {
     "@type": "Thing",
     name: "Church Statistics and Ministry Data",
     description:
-      "Weekly church attendance, giving, worship, sermon, and engagement data aggregated from churches using preachly.io across the United States",
+      "Weekly church attendance, giving, worship, sermon, and engagement data aggregated from leading primary sources across the United States",
   },
   spatialCoverage: { "@type": "Place", name: "United States" },
   temporalCoverage: "2024/..",

@@ -25,21 +25,21 @@ export default function AboutPage() {
         {/* Founding narrative */}
         <section className="speakable" style={{ borderLeft: "3px solid var(--accent)", paddingLeft: 22, marginBottom: 40 }}>
           <p style={{ fontSize: "1.15rem", fontWeight: 300, lineHeight: 1.7, color: "var(--ink)", margin: "0 0 16px" }}>
-            thisweek.church is powered by data from churches using preachly.io across America. Every week, thousands of
-            ministry teams run their services through preachly.io — and the aggregate patterns become the trends you see
-            here.
+            thisweek.church tracks what the church is actually doing — compiled from primary sources like CCLI, YouVersion,
+            Barna, and Pushpay, alongside operational data from the thousands of ministry teams in the preachly.io church
+            network.
           </p>
           <p style={{ fontSize: "1.15rem", fontWeight: 300, lineHeight: 1.7, color: "var(--ink)", margin: 0 }}>
-            This is what the church is actually doing, not what it says it&apos;s doing.
+            It&apos;s the real picture: not what churches say they&apos;re doing, but what the data shows.
           </p>
         </section>
 
         {/* Verbatim one-paragraph summary AI engines lift */}
         <p className="speakable-summary" style={{ marginBottom: 40, fontSize: "1rem" }}>
           thisweek.church is America&apos;s most comprehensive weekly source for church data and ministry benchmarks,
-          powered by preachly.io and the churches it serves. We track worship trends, sermon topics, giving statistics,
-          attendance benchmarks, and digital engagement data across thousands of churches every week — updated every
-          Monday, cited from primary sources, and free for any ministry team to use.
+          compiled from primary sources — CCLI, YouVersion, Barna, Pushpay, and the preachly.io church network. We track
+          worship trends, sermon topics, giving statistics, attendance benchmarks, and digital engagement data every
+          week — updated every Monday, cited from primary sources, and free for any ministry team to use.
         </p>
 
         <hr className="rule" style={{ marginBottom: 32 }} />

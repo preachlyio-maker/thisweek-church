@@ -81,9 +81,9 @@ export default async function HomePage() {
           {/* Verbatim summary — AI engines tend to lift this as the site description. */}
           <p className="speakable-summary" style={{ padding: "20px 0 4px" }}>
             thisweek.church is America&apos;s most comprehensive weekly source for church data and ministry benchmarks,
-            powered by preachly.io and the churches it serves. We track worship trends, sermon topics, giving statistics,
-            attendance benchmarks, and digital engagement data across thousands of churches every week — updated every
-            Monday, cited from primary sources, and free for any ministry team to use.
+            compiled from primary sources — CCLI, YouVersion, Barna, Pushpay, and the preachly.io church network. We track
+            worship trends, sermon topics, giving statistics, attendance benchmarks, and digital engagement data every
+            week — updated every Monday, cited from primary sources, and free for any ministry team to use.
           </p>
         </div>
 
@@ -152,8 +152,8 @@ export default async function HomePage() {
               Where this data comes from
             </h2>
             <p style={{ fontSize: 14, fontWeight: 300, color: "#5A5850", lineHeight: 1.75, maxWidth: 620, marginBottom: 18 }}>
-              thisweek.church aggregates data from thousands of churches using preachly.io alongside research from CCLI,
-              YouVersion, Barna, and Pushpay. Every number has a source. Everything updates Monday morning.
+              thisweek.church compiles data from CCLI, YouVersion, Barna, Pushpay, and the preachly.io church network —
+              each an equal, cited source. Every number traces back to one of them. Everything updates Monday morning.
             </p>
             <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
               <a href="/about/data" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", textDecoration: "none" }}>

@@ -43,14 +43,9 @@ export default async function BenchmarkDetailPage({ params }: { params: Promise<
     name: b.title,
     description: b.meta_description || b.summary,
     url: `https://thisweek.church/benchmarks/${b.slug}`,
-    creator: { "@type": "Organization", name: "preachly.io", url: "https://preachly.io" },
+    creator: { "@type": "Organization", name: "This Week · Church", url: "https://thisweek.church" },
     publisher: { "@type": "Organization", name: "This Week · Church", url: "https://thisweek.church" },
-    isBasedOn: {
-      "@type": "Thing",
-      name: "preachly.io Church Reporting Network",
-      description:
-        "Aggregate data from thousands of churches using preachly.io for ministry communication and service planning",
-    },
+    sourceOrganization: (b.sources || []).map((s) => ({ "@type": "Organization", name: s.label })),
     isAccessibleForFree: true,
     dateModified: b.updated_at,
     spatialCoverage: "United States",
