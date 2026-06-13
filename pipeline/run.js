@@ -208,17 +208,30 @@ async function fetchCommsTrends(ctx) {
   await upsertTrend(TREND_SEEDS.comms, ctx);
 }
 
-// Leadership/preaching YouTube channels for the "Watch This Week" wall.
-// A wider, mixed set so the wall never reads as one source.
-const YT_CHANNELS = [
-  ["Craig Groeschel", "UCIIdiIO-Y20hRW9niR0CA8A"],
-  ["Carey Nieuwhof", "UClUd0Z_Y7-PgkCjjwddM5Qw"],
-  ["Andy Stanley", "UCZWmksterrOcTNh1ljvs6Hg"],
-  ["The Gospel Coalition", "UCQMwm-DeHyFK5VPp6KySR5Q"],
-  ["Life.Church Open Network", "UCGDGRcOQeYgcHcGl0xUoTSQ"],
-  ["Transformation Church", "UCYv-siSKd3Gn9IsliO95gIw"],
+// --- "Watch This Week" video sourcing -------------------------------------
+// Broad, view-ranked search across ALL of YouTube (trending + top-performing),
+// blended with a few anchor channels and any must-include handles.
+
+const VIDEO_SEARCH_QUERIES = ["sermon", "preaching", "worship", "church leadership", "bible teaching"];
+
+// Always surface these (resolved from @handle at runtime). Grace Church FL required.
+const MUST_INCLUDE_HANDLES = ["GraceChurchFL"];
+
+// Quality anchors kept in the mix (by channel id).
+const ANCHOR_CHANNEL_IDS = [
+  "UCIIdiIO-Y20hRW9niR0CA8A", // Craig Groeschel
+  "UClUd0Z_Y7-PgkCjjwddM5Qw", // Carey Nieuwhof
+  "UCZWmksterrOcTNh1ljvs6Hg", // Andy Stanley
+  "UCQMwm-DeHyFK5VPp6KySR5Q", // The Gospel Coalition
+  "UCIQqvZbHSwX0yKNVK1MyYjQ", // Elevation Church
+  "UCYv-siSKd3Gn9IsliO95gIw", // Transformation Church
 ];
+
 const MAX_PER_CHANNEL = 2;
+const WALL_SIZE = 12;
+
+// Keep the wall brand-safe — drop sensational / reaction / off-topic titles.
+const TITLE_BLOCK = /\b(expos(e|ed|ing)|scandal|drama|cringe|reacts?|reaction|controvers|debunk|destroy(s|ed)?|deepfake|exposed)\b/i;
 
 function decodeEntities(s) {
   return s
@@ -228,10 +241,31 @@ function decodeEntities(s) {
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n));
 }
 
+function ytUrl(path, params, key) {
+  const qs = Object.entries({ key, ...params })
+    .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+    .join("&");
+  return `https://www.googleapis.com/youtube/v3/${path}?${qs}`;
+}
+
+async function ytJson(url) {
+  const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+async function resolveHandle(handle, key) {
+  try {
+    const json = await ytJson(ytUrl("channels", { part: "id", forHandle: handle }, key));
+    return json.items?.[0]?.id || null;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchSocialPosts(ctx) {
-  // Auto-refreshes the YouTube video wall (kind="video") with the MOST-VIEWED
-  // RECENT leadership videos — so the wall trends and feels fresh each week.
-  // Accounts + trending posts are curated via /admin/seed. Needs a YouTube key.
+  // Auto-refreshes the YouTube video wall (kind="video") with the most-viewed
+  // recent church videos from across YouTube, plus must-include channels.
   if (!supabase) return;
   const key = process.env.YOUTUBE_API_KEY;
   if (!key) {
@@ -239,81 +273,114 @@ async function fetchSocialPosts(ctx) {
     return;
   }
 
-  // 1) Gather candidate video IDs: most-viewed videos from the last 45 days
-  //    across the curated leadership channels.
-  const publishedAfter = new Date(Date.now() - 45 * 86400000).toISOString();
-  const candidates = new Map(); // videoId -> channelName
-  for (const [name, channelId] of YT_CHANNELS) {
+  const recent30 = new Date(Date.now() - 30 * 86400000).toISOString();
+  const recent60 = new Date(Date.now() - 60 * 86400000).toISOString();
+  const candidates = new Set();
+  const forceIds = new Set(); // videos we always include (Grace Church etc.)
+
+  // 1) Broad, view-ranked search across all of YouTube.
+  for (const q of VIDEO_SEARCH_QUERIES) {
     try {
-      const url =
-        `https://www.googleapis.com/youtube/v3/search?key=${key}&channelId=${channelId}` +
-        `&part=snippet&type=video&order=viewCount&maxResults=5&publishedAfter=${encodeURIComponent(publishedAfter)}`;
-      const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      for (const it of json.items || []) {
-        if (it.id?.videoId) candidates.set(it.id.videoId, name);
-      }
-      console.log(`  · ${name}: ${(json.items || []).length} candidates`);
+      const json = await ytJson(
+        ytUrl("search", {
+          part: "snippet", q, type: "video", order: "viewCount",
+          publishedAfter: recent30, maxResults: 10, regionCode: "US",
+          relevanceLanguage: "en", safeSearch: "strict",
+        }, key)
+      );
+      for (const it of json.items || []) if (it.id?.videoId) candidates.add(it.id.videoId);
+      console.log(`  · search "${q}": ${(json.items || []).length}`);
     } catch (err) {
-      console.log(`  · ${name}: skipped (${err.message})`);
+      console.log(`  · search "${q}": skipped (${err.message})`);
     }
   }
-  const ids = [...candidates.keys()];
+
+  // 2) Anchor channels + must-include handles (Grace Church FL).
+  const includeIds = [...ANCHOR_CHANNEL_IDS];
+  const forcedChannels = new Set();
+  for (const h of MUST_INCLUDE_HANDLES) {
+    const id = await resolveHandle(h, key);
+    console.log(`  · @${h} -> ${id || "not found"}`);
+    if (id) { includeIds.push(id); forcedChannels.add(id); }
+  }
+  for (const channelId of includeIds) {
+    try {
+      const json = await ytJson(
+        ytUrl("search", {
+          part: "snippet", channelId, type: "video", order: "viewCount",
+          publishedAfter: recent60, maxResults: 3,
+        }, key)
+      );
+      for (const it of json.items || []) {
+        if (!it.id?.videoId) continue;
+        candidates.add(it.id.videoId);
+        if (forcedChannels.has(channelId)) forceIds.add(it.id.videoId);
+      }
+    } catch {
+      /* skip this channel */
+    }
+  }
+
+  const ids = [...candidates];
   if (ids.length === 0) return;
 
-  // 2) Pull real statistics (view/comment counts) for the candidates.
-  let rows = [];
-  try {
-    const statUrl =
-      `https://www.googleapis.com/youtube/v3/videos?key=${key}` +
-      `&part=snippet,statistics&id=${ids.slice(0, 50).join(",")}`;
-    const res = await fetch(statUrl, { signal: AbortSignal.timeout(15000) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    rows = (json.items || []).map((it) => {
+  // 3) Real statistics for every candidate (batched 50 per call).
+  let items = [];
+  for (let i = 0; i < ids.length; i += 50) {
+    try {
+      const json = await ytJson(ytUrl("videos", { part: "snippet,statistics", id: ids.slice(i, i + 50).join(",") }, key));
+      items = items.concat(json.items || []);
+    } catch (err) {
+      console.log(`  · stats batch skipped (${err.message})`);
+    }
+  }
+  if (items.length === 0) return;
+
+  // 4) Build rows, dropping sensational / off-topic titles.
+  const rows = items
+    .filter((it) => !TITLE_BLOCK.test(it.snippet?.title || ""))
+    .map((it) => {
       const sn = it.snippet || {};
       const st = it.statistics || {};
       return {
         platform: "youtube",
         kind: "video",
         account_handle: sn.channelId || "youtube",
-        account_name: sn.channelTitle || candidates.get(it.id) || "",
+        account_name: decodeEntities(sn.channelTitle || ""),
         caption_excerpt: decodeEntities(sn.title || ""),
         post_url: `https://www.youtube.com/watch?v=${it.id}`,
         thumbnail_url:
           (sn.thumbnails?.high || sn.thumbnails?.medium || {}).url ||
           `https://img.youtube.com/vi/${it.id}/hqdefault.jpg`,
-        likes: parseInt(st.viewCount || "0", 10), // we surface views in the "likes" column
+        likes: parseInt(st.viewCount || "0", 10), // views surfaced via the "likes" column
         comments: parseInt(st.commentCount || "0", 10),
         captured_at: new Date().toISOString(),
+        _force: forceIds.has(it.id),
       };
     });
-  } catch (err) {
-    console.log(`  · stats lookup failed (${err.message})`);
-    return;
-  }
 
-  // 3) Rank by views, but cap each channel so the wall stays varied.
+  // 5) Forced includes first (Grace Church), then top by views — capped per channel.
   rows.sort((a, b) => b.likes - a.likes);
   const perChannel = {};
   const picked = [];
-  for (const r of rows) {
+  const take = (r) => {
     const c = perChannel[r.account_handle] || 0;
-    if (c >= MAX_PER_CHANNEL) continue;
+    if (c >= MAX_PER_CHANNEL || picked.length >= WALL_SIZE) return;
     perChannel[r.account_handle] = c + 1;
     picked.push(r);
-    if (picked.length >= 8) break;
-  }
-  rows = picked;
-  if (rows.length === 0) return;
+  };
+  for (const r of rows) if (r._force) take(r);
+  for (const r of rows) if (!r._force) take(r);
+
+  const finalRows = picked.map(({ _force, ...r }) => r);
+  if (finalRows.length === 0) return;
 
   // Replace just the video lane; leaves curated accounts/posts untouched.
   await supabase.from("social_posts").delete().eq("kind", "video");
-  const { error } = await supabase.from("social_posts").insert(rows);
+  const { error } = await supabase.from("social_posts").insert(finalRows);
   if (error) throw new Error(error.message);
   ctx.changedPaths.add("/");
-  console.log(`  ✓ refreshed ${rows.length} trending videos`);
+  console.log(`  ✓ refreshed ${finalRows.length} trending videos`);
 }
 
 // Broad curated set of reputable church sources, skewed to PASTORS & LEADERSHIP.

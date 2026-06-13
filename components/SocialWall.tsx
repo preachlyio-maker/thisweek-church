@@ -183,7 +183,7 @@ export default function SocialWall({
         <section>
           <SectionHeading label="Watch This Week" />
           <Grid>
-            {videos.slice(0, 6).map((v) => (
+            {videos.slice(0, 12).map((v) => (
               <VideoCard key={v.id} post={v} />
             ))}
           </Grid>
