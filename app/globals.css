@@ -1,6 +1,18 @@
+/* Google fonts MUST be imported before Tailwind. Tailwind v4 inlines its CSS
+   in place of its @import, so anything imported after it ends up preceded by
+   rules and the browser silently drops it (the "falls back to serif" bug). */
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+/* Custom display face — used for all titles, headings, logo and hero. */
+@font-face {
+  font-family: 'TAY Birdie';
+  src: url('/fonts/TAYBirdieRegular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --ink: #1A1A18;
@@ -10,6 +22,11 @@
   --sage: #5C7A5F;
   --sage-light: #D8E8D8;
   --tan: #B8A98A;
+
+  /* Semantic aliases used by article/detail pages */
+  --accent: #5C7A5F;   /* sage — category labels, "new" */
+  --pulse:  #4F8A5B;   /* live / trending up */
+  --danger: #B0573F;   /* muted terracotta — trending down */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,8 +42,25 @@ html {
 
 body { min-height: 100vh; }
 
-.font-type { font-family: 'Special Elite', cursive; }
+/* Display face: TAY Birdie first, Special Elite as the editorial fallback. */
+.font-type { font-family: 'TAY Birdie', 'Special Elite', cursive; }
+.font-display { font-family: 'TAY Birdie', 'Special Elite', cursive; }
 .font-mono { font-family: 'Space Mono', monospace; }
+
+/* "Updated …" pill used on article headers */
+.updated-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #3A6A3E;
+  background: var(--sage-light);
+  padding: 4px 9px;
+  white-space: nowrap;
+}
 
 @keyframes ticker {
   0%   { transform: translateX(0); }
@@ -39,11 +73,42 @@ body { min-height: 100vh; }
 }
 .ticker-inner:hover { animation-play-state: paused; }
 
-.trend-card { transition: background 0.18s; }
+.trend-card { transition: background 0.18s, transform 0.18s; }
 .trend-card:hover { background: var(--ink) !important; }
+/* Keep text legible when the card inverts to black on hover */
+.trend-card:hover h2,
+.trend-card:hover ol span,
+.trend-card:hover > div:first-of-type span { color: #EDEBE4 !important; }
+.trend-card:hover .font-mono[style*="Full list"],
+.trend-card:hover > .font-mono:last-child { color: var(--sage) !important; }
+
+/* Category pills invert on hover, matching the cards. */
+.cat-pill { transition: background 0.15s, color 0.15s; }
+.cat-pill:hover { background: var(--ink) !important; color: var(--paper) !important; }
 
 .rule { border: none; border-top: 1px solid var(--rule); }
 
+/* Generic link/affordance polish */
+a { transition: opacity 0.15s, color 0.15s; }
+a:hover { opacity: 0.78; }
+a:focus-visible,
+button:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 880px) {
+  .hero-grid   { grid-template-columns: 1fr !important; gap: 32px !important; padding: 40px 0 36px !important; }
+  .hero-h1     { font-size: 46px !important; }
+  .feature-grid{ grid-template-columns: 1fr !important; }
+}
+@media (max-width: 680px) {
+  .trends-3    { grid-template-columns: 1fr !important; }
+  .hero-h1     { font-size: 40px !important; }
+  .footer-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .nav-links   { display: none !important; }
+  .nav-cta     { display: flex !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ticker-inner { animation: none; }
+  a, .trend-card { transition: none; }
 }

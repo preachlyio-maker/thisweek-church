@@ -40,6 +40,7 @@ export default function SiteHeader() {
           </Link>
 
           <div style={{ display: "flex" }}>
+            <div className="nav-links" style={{ display: "flex" }}>
             {[
               { href: "/trends", label: "Trends" },
               { href: "/seasonal", label: "Seasonal" },
@@ -64,9 +65,11 @@ export default function SiteHeader() {
                 {label}
               </Link>
             ))}
+            </div>
             <Link
               href="https://preachly.io"
               target="_blank"
+              className="nav-cta"
               style={{
                 fontFamily: "'Space Mono', monospace",
                 fontSize: "10px",

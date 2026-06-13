@@ -3,31 +3,13 @@ import { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PreachlyCTA from "@/components/PreachlyCtA";
-import { supabase } from "@/lib/supabase";
-import { TrendPage } from "@/lib/types";
+import { getTrendBySlug, getRelatedTrends } from "@/lib/trends";
 import { format } from "date-fns";
 
 export const revalidate = 3600;
 
-async function getTrend(slug: string): Promise<TrendPage | null> {
-  const { data } = await supabase
-    .from("trends")
-    .select("*")
-    .eq("slug", slug)
-    .eq("status", "published")
-    .single();
-  return data || null;
-}
-
-async function getRelated(slugs: string[]): Promise<TrendPage[]> {
-  if (!slugs.length) return [];
-  const { data } = await supabase
-    .from("trends")
-    .select("*")
-    .in("slug", slugs)
-    .eq("status", "published");
-  return data || [];
-}
+const getTrend = getTrendBySlug;
+const getRelated = getRelatedTrends;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -209,7 +191,7 @@ export default async function TrendDetailPage({ params }: { params: Promise<{ sl
                 <a
                   key={r.id}
                   href={`/trends/${r.slug}`}
-                  style={{ textDecoration: "none", padding: "14px 18px", border: "1px solid var(--rule)", borderRadius: 4, background: "white", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  style={{ textDecoration: "none", padding: "14px 18px", border: "2px solid var(--ink)", background: "transparent", display: "flex", justifyContent: "space-between", alignItems: "center" }}
                 >
                   <span style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--ink)" }}>{r.title}</span>
                   <span style={{ fontSize: "0.8rem", color: "var(--accent)" }}>→</span>

@@ -2,22 +2,10 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import TrendCard from "@/components/TrendCard";
 import PreachlyCTA from "@/components/PreachlyCtA";
-import { supabase } from "@/lib/supabase";
-import { TrendPage } from "@/lib/types";
+import { getLatestTrends } from "@/lib/trends";
 import { format } from "date-fns";
 
 export const revalidate = 3600;
-
-async function getTrends(): Promise<TrendPage[]> {
-  const { data, error } = await supabase
-    .from("trends")
-    .select("*")
-    .eq("status", "published")
-    .order("updated_at", { ascending: false })
-    .limit(12);
-  if (error) return [];
-  return data || [];
-}
 
 const CAT_LINKS = [
   { href: "/trends?category=worship", label: "Worship Songs" },
@@ -29,7 +17,7 @@ const CAT_LINKS = [
 ];
 
 export default async function HomePage() {
-  const trends = await getTrends();
+  const trends = await getLatestTrends();
   const weekOf = format(new Date(), "'Vol. 01 —' MMMM yyyy");
   const issueRange = format(new Date(), "MMMM d");
   const issueEnd = format(new Date(Date.now() + 6 * 86400000), "d, yyyy");
@@ -40,13 +28,13 @@ export default async function HomePage() {
       <main>
         {/* Hero */}
         <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px" }}>
-          <section style={{ padding: "60px 0 52px", borderBottom: "2px solid #1A1A18", display: "grid", gridTemplateColumns: "1fr 360px", gap: 48, alignItems: "end" }}>
+          <section className="hero-grid" style={{ padding: "60px 0 52px", borderBottom: "2px solid #1A1A18", display: "grid", gridTemplateColumns: "1fr 360px", gap: 48, alignItems: "end" }}>
             <div>
               <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8A8578", marginBottom: 20, display: "flex", alignItems: "center", gap: 12 }}>
                 <span style={{ display: "block", width: 32, height: 1, background: "#8A8578" }} />
                 {weekOf}
               </p>
-              <h1 className="font-type" style={{ fontSize: 62, lineHeight: 1.0, color: "#1A1A18", marginBottom: 24 }}>
+              <h1 className="font-type hero-h1" style={{ fontSize: 62, lineHeight: 1.0, color: "#1A1A18", marginBottom: 24 }}>
                 What the<br />
                 church is<br />
                 <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>doing</em><br />
@@ -92,7 +80,7 @@ export default async function HomePage() {
               <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.14em", color: "#8A8578" }}>FIRST RUN IN PROGRESS — PIPELINE POPULATES DATA ON MONDAYS</p>
             </div>
           ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: "2px solid #1A1A18", borderLeft: "2px solid #1A1A18" }}>
+            <div className="trends-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: "2px solid #1A1A18", borderLeft: "2px solid #1A1A18" }}>
               {trends.slice(0, 3).map((trend, i) => (
                 <TrendCard key={trend.id} trend={trend} index={i} />
               ))}
@@ -101,9 +89,9 @@ export default async function HomePage() {
 
           {/* Featured + side stack */}
           {trends.length > 3 && (
-            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", borderLeft: "2px solid #1A1A18" }}>
+            <div className="feature-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", borderLeft: "2px solid #1A1A18" }}>
               {/* Featured card */}
-              <div style={{ background: "#1A1A18", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: 32, position: "relative", overflow: "hidden" }}>
+              <a href={`/trends/${trends[3]?.slug}`} style={{ display: "block", textDecoration: "none", background: "#1A1A18", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: 32, position: "relative", overflow: "hidden" }}>
                 <span className="font-type" style={{ fontSize: 200, color: "rgba(255,255,255,0.03)", position: "absolute", top: -30, right: -10, lineHeight: 1, pointerEvents: "none" }}>✦</span>
                 <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.18em", textTransform: "uppercase", color: "#5C7A5F", marginBottom: 14, display: "block" }}>// {trends[3]?.category}</span>
                 <h3 className="font-type" style={{ fontSize: 30, lineHeight: 1.2, color: "#EDEBE4", marginBottom: 22 }}>
@@ -118,7 +106,7 @@ export default async function HomePage() {
                   ))}
                 </ol>
                 <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F" }}>Read the full breakdown →</span>
-              </div>
+              </a>
 
               {/* Side stack */}
               <div style={{ display: "flex", flexDirection: "column" }}>
@@ -139,7 +127,7 @@ export default async function HomePage() {
           {/* Category pills */}
           <div style={{ padding: "20px 0 0", display: "flex", gap: 8, flexWrap: "wrap" }}>
             {CAT_LINKS.map(({ href, label }) => (
-              <a key={href} href={href} className="font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", border: "1px solid #1A1A18", padding: "6px 14px", background: "transparent", color: "#1A1A18", textDecoration: "none" }}>
+              <a key={href} href={href} className="font-mono cat-pill" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", border: "1px solid #1A1A18", padding: "6px 14px", background: "transparent", color: "#1A1A18", textDecoration: "none" }}>
                 {label}
               </a>
             ))}

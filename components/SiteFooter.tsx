@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function SiteFooter() {
   return (
     <footer style={{ borderTop: "2px solid #1A1A18", marginTop: 48 }}>
-      <div style={{ maxWidth: 1060, margin: "0 auto", padding: "36px 28px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: 40 }}>
+      <div className="footer-grid" style={{ maxWidth: 1060, margin: "0 auto", padding: "36px 28px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: 40 }}>
         <div>
           <span className="font-type" style={{ fontSize: 20, color: "#1A1A18", marginBottom: 8, display: "block" }}>
             This Week · <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>Church</em>
