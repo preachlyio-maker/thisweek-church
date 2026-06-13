@@ -88,19 +88,26 @@ function PostCard({ post }: { post: SocialPost }) {
 /* ---------------- Accounts to follow ---------------- */
 
 function AccountCard({ post }: { post: SocialPost }) {
+  const name = post.account_name || post.account_handle;
+  const initial = (name || "?").trim().charAt(0).toUpperCase();
   return (
     <a
       href={post.post_url}
       target="_blank"
       rel="noopener noreferrer"
       className="media-card"
-      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: 18, display: "flex", flexDirection: "column", gap: 8, minHeight: 120 }}
+      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: 18, display: "flex", flexDirection: "column", gap: 12, minHeight: 130 }}
     >
-      <span className="media-foot font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8A8578" }}>
-        {PLATFORM_LABEL[post.platform]}
-      </span>
-      <div className="media-title font-type" style={{ fontSize: 17, lineHeight: 1.2, color: "#1A1A18" }}>
-        {post.account_name || `@${post.account_handle}`}
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <span style={{ width: 40, height: 40, background: "#5C7A5F", color: "#EDEBE4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} className="font-type">
+          <span style={{ fontSize: 20, lineHeight: 1 }}>{initial}</span>
+        </span>
+        <div style={{ minWidth: 0 }}>
+          <div className="media-title font-type" style={{ fontSize: 15, lineHeight: 1.15, color: "#1A1A18", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
+          <span className="media-foot font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8A8578" }}>
+            {PLATFORM_LABEL[post.platform]} · @{post.account_handle}
+          </span>
+        </div>
       </div>
       {post.caption_excerpt && (
         <p className="media-title" style={{ fontSize: 12, fontWeight: 300, color: "#5A5850", lineHeight: 1.5, flex: 1 }}>{post.caption_excerpt}</p>
@@ -137,7 +144,7 @@ export default function SocialWall({
     <>
       {videos.length > 0 && (
         <section>
-          <SectionHeading label="Watch This Week" />
+          <SectionHeading label="Videos We Love This Week" />
           <Grid>
             {videos.slice(0, 12).map((v) => (
               <VideoCard key={v.id} post={v} />
@@ -148,7 +155,7 @@ export default function SocialWall({
 
       {posts.length > 0 && (
         <section>
-          <SectionHeading label="Trending This Week" />
+          <SectionHeading label="Loved This Week" />
           <Grid>
             {posts.slice(0, 6).map((p) => (
               <PostCard key={p.id} post={p} />
@@ -159,7 +166,7 @@ export default function SocialWall({
 
       {accounts.length > 0 && (
         <section>
-          <SectionHeading label="Accounts to Follow" />
+          <SectionHeading label="Churches to Follow" />
           <Grid>
             {accounts.slice(0, 6).map((a) => (
               <AccountCard key={a.id} post={a} />

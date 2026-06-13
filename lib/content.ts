@@ -54,7 +54,20 @@ export async function getSocialPosts(): Promise<{
     /* leave empty */
   }
   const byKind = (k: SocialPost["kind"]) => all.filter((p) => (p.kind ?? "post") === k);
-  return { videos: byKind("video"), posts: byKind("post"), accounts: byKind("account") };
+  const dedupe = (arr: SocialPost[], keyOf: (p: SocialPost) => string) => {
+    const seen = new Set<string>();
+    return arr.filter((p) => {
+      const key = keyOf(p);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+  return {
+    videos: dedupe(byKind("video"), (p) => p.post_url),
+    posts: dedupe(byKind("post"), (p) => p.post_url),
+    accounts: dedupe(byKind("account"), (p) => `${p.platform}:${p.account_handle.toLowerCase()}`),
+  };
 }
 
 // ------------------------------------------------------------- Best reads

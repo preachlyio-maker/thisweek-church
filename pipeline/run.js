@@ -208,24 +208,24 @@ async function fetchCommsTrends(ctx) {
   await upsertTrend(TREND_SEEDS.comms, ctx);
 }
 
-// --- "Watch This Week" video sourcing -------------------------------------
-// Broad, view-ranked search across ALL of YouTube (trending + top-performing),
-// blended with a few anchor channels and any must-include handles.
+// --- "Videos We Love This Week" sourcing -----------------------------------
+// A warm, varied mix of churches of ALL sizes from across the country — and
+// deliberately NOT the usual megachurches. We search broadly, then EXCLUDE
+// channels above a subscriber ceiling so smaller/regional churches surface.
 
-const VIDEO_SEARCH_QUERIES = ["sermon", "preaching", "worship", "church leadership", "bible teaching"];
+const VIDEO_SEARCH_QUERIES = [
+  "sunday sermon", "worship", "church service", "small church", "bible teaching", "preaching",
+];
 
-// Always surface these (resolved from @handle at runtime). Grace Church FL required.
+// Always surface this one (resolved from @handle at runtime).
 const MUST_INCLUDE_HANDLES = ["GraceChurchFL"];
 
-// Quality anchors kept in the mix (by channel id).
-const ANCHOR_CHANNEL_IDS = [
-  "UCIIdiIO-Y20hRW9niR0CA8A", // Craig Groeschel
-  "UClUd0Z_Y7-PgkCjjwddM5Qw", // Carey Nieuwhof
-  "UCZWmksterrOcTNh1ljvs6Hg", // Andy Stanley
-  "UCQMwm-DeHyFK5VPp6KySR5Q", // The Gospel Coalition
-  "UCIQqvZbHSwX0yKNVK1MyYjQ", // Elevation Church
-  "UCYv-siSKd3Gn9IsliO95gIw", // Transformation Church
-];
+// No megachurch anchors — the whole point is to spread the love.
+const ANCHOR_CHANNEL_IDS = [];
+
+// Exclude channels bigger than this (the megachurches). Keeps it to
+// small/mid churches. Force-included handles bypass this.
+const MAX_SUBSCRIBERS = 250000;
 
 const MAX_PER_CHANNEL = 1; // one video per channel — keeps the wall varied
 const WALL_SIZE = 12;
@@ -336,9 +336,24 @@ async function fetchSocialPosts(ctx) {
   }
   if (items.length === 0) return;
 
-  // 4) Build rows, dropping sensational / off-topic titles.
+  // 3b) Look up channel sizes so we can exclude the megachurches.
+  const channelIds = [...new Set(items.map((it) => it.snippet?.channelId).filter(Boolean))];
+  const subsByChannel = {};
+  for (let i = 0; i < channelIds.length; i += 50) {
+    try {
+      const json = await ytJson(ytUrl("channels", { part: "statistics", id: channelIds.slice(i, i + 50).join(",") }, key));
+      for (const ch of json.items || []) {
+        subsByChannel[ch.id] = parseInt(ch.statistics?.subscriberCount || "0", 10);
+      }
+    } catch (err) {
+      console.log(`  · channel stats skipped (${err.message})`);
+    }
+  }
+
+  // 4) Build rows: drop sensational titles and megachurch-sized channels.
   const rows = items
     .filter((it) => !TITLE_BLOCK.test(it.snippet?.title || ""))
+    .filter((it) => forceIds.has(it.id) || (subsByChannel[it.snippet?.channelId] || 0) <= MAX_SUBSCRIBERS)
     .map((it) => {
       const sn = it.snippet || {};
       const st = it.statistics || {};
