@@ -8,7 +8,6 @@ import BestReads from "@/components/BestReads";
 import EditorialFeed from "@/components/EditorialFeed";
 import { getLatestTrends } from "@/lib/trends";
 import { getArticles, getSocialPosts, getReads, getBenchmarkOfWeek } from "@/lib/content";
-import { format } from "date-fns";
 
 export const revalidate = 3600;
 
@@ -29,53 +28,28 @@ export default async function HomePage() {
     getReads(6),
     getBenchmarkOfWeek(),
   ]);
-  const weekOf = format(new Date(), "'Vol. 01 —' MMMM yyyy");
-  const issueRange = format(new Date(), "MMMM d");
-  const issueEnd = format(new Date(Date.now() + 6 * 86400000), "d, yyyy");
-
   return (
     <>
       <SiteHeader />
       <main>
         {/* Hero */}
         <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px" }}>
-          <section className="hero-grid" style={{ padding: "60px 0 52px", borderBottom: "2px solid #1A1A18", display: "grid", gridTemplateColumns: "1fr 360px", gap: 48, alignItems: "end" }}>
-            <div>
-              <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8A8578", marginBottom: 20, display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ display: "block", width: 32, height: 1, background: "#8A8578" }} />
-                {weekOf}
-              </p>
-              <h1 className="font-type hero-h1" style={{ fontSize: 62, lineHeight: 1.0, color: "#1A1A18", marginBottom: 24 }}>
-                What the<br />
-                church is<br />
-                <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>doing</em><br />
-                <span style={{ fontSize: 46, color: "#8A8578", fontStyle: "italic" }}>this week.</span>
-              </h1>
-              <p style={{ fontSize: 13, fontWeight: 300, color: "#5A5850", lineHeight: 1.75, maxWidth: 380 }}>
-                Worship songs, sermon topics, scripture trends, and ministry benchmarks — sourced and updated automatically every Monday.
-              </p>
-            </div>
-
-            <div>
-              <div style={{ border: "2px solid #1A1A18", padding: 24 }}>
-                <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "#8A8578", display: "block", marginBottom: 12 }}>Current Issue</span>
-                <div className="font-type" style={{ fontSize: 26, color: "#1A1A18", lineHeight: 1.1 }}>{issueRange} — {issueEnd}</div>
-                <span className="font-mono" style={{ fontSize: 10, color: "#5C7A5F", marginTop: 8, display: "block" }}>// Weekly Edition</span>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", border: "2px solid #1A1A18", borderTop: "none" }}>
-                <div style={{ padding: 16, borderRight: "1px solid #1A1A18" }}>
-                  <div className="font-type" style={{ fontSize: 34, color: "#1A1A18", lineHeight: 1 }}>{trends.length || "—"}</div>
-                  <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8A8578", marginTop: 4, display: "block" }}>Live pages</span>
-                </div>
-                <div style={{ padding: 16 }}>
-                  <div className="font-type" style={{ fontSize: 34, color: "#1A1A18", lineHeight: 1 }}>Mon</div>
-                  <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8A8578", marginTop: 4, display: "block" }}>Updates</span>
-                </div>
-              </div>
-              <p style={{ fontSize: 12, fontWeight: 300, color: "#8A8578", lineHeight: 1.65, marginTop: 16 }}>
-                Automatically sourced and published every Monday morning.
-              </p>
-            </div>
+          <section style={{ padding: "78px 0 44px", borderBottom: "2px solid #1A1A18" }}>
+            <p className="font-mono" style={{ fontSize: 10, letterSpacing: "0.26em", textTransform: "uppercase", color: "#8A8578", marginBottom: 28, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+              <span style={{ display: "block", width: 28, height: 1, background: "#5C7A5F" }} />
+              America&apos;s Church Data Hub
+              <span style={{ color: "#C8C4B8" }}>/</span>
+              Updated Every Monday
+            </p>
+            <h1 className="font-type hero-h1" style={{ fontSize: 84, lineHeight: 0.94, letterSpacing: "-0.01em", color: "#1A1A18", marginBottom: 28, maxWidth: 960 }}>
+              What the church is <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>actually</em> doing.
+            </h1>
+            <p style={{ fontSize: 15.5, fontWeight: 300, color: "#5A5850", lineHeight: 1.75, maxWidth: 580, marginBottom: 32 }}>
+              Worship, preaching, scripture, giving, and engagement data — compiled from primary sources and refreshed every week. The real picture of the American church, not what it says about itself.
+            </p>
+            <p className="font-mono" style={{ fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8A8578", borderTop: "1px solid #C8C4B8", paddingTop: 18 }}>
+              Worship <span style={{ color: "#5C7A5F" }}>/</span> Sermons <span style={{ color: "#5C7A5F" }}>/</span> Scripture <span style={{ color: "#5C7A5F" }}>/</span> Giving <span style={{ color: "#5C7A5F" }}>/</span> Engagement <span style={{ color: "#5C7A5F" }}>/</span> Benchmarks
+            </p>
           </section>
 
           {/* Verbatim summary — AI engines tend to lift this as the site description. */}
@@ -96,7 +70,7 @@ export default async function HomePage() {
 
           {trends.length === 0 ? (
             <div style={{ border: "2px solid #1A1A18", padding: "80px 40px", textAlign: "center" }}>
-              <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.14em", color: "#8A8578" }}>FIRST RUN IN PROGRESS — PIPELINE POPULATES DATA ON MONDAYS</p>
+              <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.14em", color: "#8A8578" }}>FRESH DATA PUBLISHES EVERY MONDAY MORNING</p>
             </div>
           ) : (
             <div className="trends-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: "2px solid #1A1A18", borderLeft: "2px solid #1A1A18" }}>
