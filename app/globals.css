@@ -42,6 +42,17 @@ html {
 
 body { min-height: 100vh; }
 
+/* Film-grain texture over the whole page — subtle, non-interactive. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='140'%20height='140'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 /* Display face: TAY Birdie first, Special Elite as the editorial fallback. */
 .font-type { font-family: 'TAY Birdie', 'Special Elite', cursive; }
 .font-display { font-family: 'TAY Birdie', 'Special Elite', cursive; }
@@ -85,6 +96,13 @@ body { min-height: 100vh; }
 /* Category pills invert on hover, matching the cards. */
 .cat-pill { transition: background 0.15s, color 0.15s; }
 .cat-pill:hover { background: var(--ink) !important; color: var(--paper) !important; }
+
+/* Big category tiles — fill with sage on hover for a poppy feel. */
+.cat-tile { transition: background 0.18s; }
+.cat-tile:hover { background: var(--sage); }
+.cat-tile:hover .cat-name,
+.cat-tile:hover .cat-num,
+.cat-tile:hover .cat-desc { color: #EDEBE4 !important; }
 
 /* Social wall + reads hover affordances. */
 .social-card { transition: background 0.15s; }

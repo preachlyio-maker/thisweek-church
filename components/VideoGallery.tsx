@@ -55,7 +55,10 @@ export default function VideoGallery({ videos }: { videos: SocialPost[] }) {
 
   return (
     <section>
-      <SectionHeading label="Video & Streaming" />
+      <SectionHeading label="Caught Our Eye" />
+      <p style={{ fontSize: 13, fontWeight: 300, color: "#5A5850", lineHeight: 1.6, maxWidth: 560, margin: "-6px 0 18px" }}>
+        Videos our team came across this week and wanted to pass along — worth a few minutes.
+      </p>
 
       {/* Featured */}
       <a

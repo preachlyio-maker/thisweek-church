@@ -4,14 +4,12 @@ import PreachlyCTA from "@/components/PreachlyCtA";
 import CategoryGrid from "@/components/CategoryGrid";
 import VideoGallery from "@/components/VideoGallery";
 import BestReads from "@/components/BestReads";
-import { getLatestTrends } from "@/lib/trends";
 import { getSocialPosts, getReads } from "@/lib/content";
 
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [trends, social, reads] = await Promise.all([
-    getLatestTrends(),
+  const [social, reads] = await Promise.all([
     getSocialPosts(),
     getReads(5),
   ]);
@@ -40,22 +38,22 @@ export default async function HomePage() {
             </p>
           </section>
 
-          {/* Verbatim summary — AI engines tend to lift this as the site description. */}
-          <p className="speakable-summary" style={{ padding: "20px 0 4px" }}>
+          {/* Categories — the navigation hub, right up top */}
+          <CategoryGrid />
+
+          {/* Caught Our Eye — editorial video picks */}
+          <VideoGallery videos={social.videos} />
+
+          {/* This Week's Best Reads */}
+          <BestReads reads={reads} />
+
+          {/* Verbatim summary — lower on the page; mainly for AI/SEO. */}
+          <p className="speakable-summary" style={{ padding: "44px 0 0" }}>
             thisweek.church is America&apos;s most comprehensive weekly source for church data and ministry benchmarks,
             compiled from primary sources — CCLI, YouVersion, Barna, Pushpay, and the preachly.io church network. We track
             worship trends, sermon topics, giving statistics, attendance benchmarks, and digital engagement data every
             week — updated every Monday, cited from primary sources, and free for any ministry team to use.
           </p>
-
-          {/* Browse by area — the organizing hub */}
-          <CategoryGrid trends={trends} />
-
-          {/* Video & Streaming */}
-          <VideoGallery videos={social.videos} />
-
-          {/* This Week's Best Reads */}
-          <BestReads reads={reads} />
 
           {/* Where this data comes from — provenance */}
           <section style={{ borderTop: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: "32px 0", margin: "44px 0 0" }}>
