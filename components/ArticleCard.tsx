@@ -12,12 +12,12 @@ export default function ArticleCard({ article }: { article: Article }) {
       <article
         className="trend-card"
         style={{
-          borderRight: "2px solid #1A1A18",
-          borderBottom: "2px solid #1A1A18",
+          borderRight: "2px solid #0A0A0A",
+          borderBottom: "2px solid #0A0A0A",
           padding: 24,
           position: "relative",
           overflow: "hidden",
-          background: "#EDEBE4",
+          background: "#FEF3D5",
           cursor: "pointer",
           height: "100%",
           display: "flex",
@@ -33,23 +33,23 @@ export default function ArticleCard({ article }: { article: Article }) {
         </span>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", border: "1px solid #C8C4B8", padding: "3px 7px", color: "#5C7A5F" }}>
+          <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", border: "1px solid #0A0A0A", padding: "3px 7px", color: "#F50E00" }}>
             {article.type}
           </span>
-          <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.1em", color: "#8A8578" }}>
+          <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.1em", color: "#7A5E14" }}>
             {format(new Date(article.published_at), "MMM d")}
           </span>
         </div>
 
-        <h3 className="font-type" style={{ fontSize: 20, lineHeight: 1.25, color: "#1A1A18" }}>
+        <h3 className="font-type" style={{ fontSize: 20, lineHeight: 1.25, color: "#0A0A0A" }}>
           {article.title}
         </h3>
 
-        <p style={{ fontSize: 12.5, fontWeight: 300, color: "#5A5850", lineHeight: 1.6, flex: 1 }}>
+        <p style={{ fontSize: 12.5, fontWeight: 300, color: "#3A2E18", lineHeight: 1.6, flex: 1 }}>
           {article.summary}
         </p>
 
-        <div className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578", display: "flex", justifyContent: "space-between", marginTop: "auto" }}>
+        <div className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7A5E14", display: "flex", justifyContent: "space-between", marginTop: "auto" }}>
           <span>{mins} min read</span>
           <span>Read →</span>
         </div>

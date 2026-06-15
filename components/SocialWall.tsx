@@ -23,9 +23,9 @@ function VideoCard({ post }: { post: SocialPost }) {
       target="_blank"
       rel="noopener noreferrer"
       className="media-card"
-      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", display: "flex", flexDirection: "column" }}
+      style={{ textDecoration: "none", borderRight: "2px solid #0A0A0A", borderBottom: "2px solid #0A0A0A", display: "flex", flexDirection: "column" }}
     >
-      <div className="media-thumb-wrap" style={{ borderBottom: "2px solid #1A1A18", aspectRatio: "16 / 9", background: "#1A1A18" }}>
+      <div className="media-thumb-wrap" style={{ borderBottom: "2px solid #0A0A0A", aspectRatio: "16 / 9", background: "#0A0A0A" }}>
         {post.thumbnail_url && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img className="media-thumb" src={post.thumbnail_url} alt="" loading="lazy" style={{ height: "100%", objectFit: "cover" }} />
@@ -34,13 +34,13 @@ function VideoCard({ post }: { post: SocialPost }) {
         {post.likes > 0 && <span className="media-badge">{fmtCount(post.likes)} views</span>}
       </div>
       <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
-        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
+        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#F50E00" }}>
           {PLATFORM_LABEL[post.platform]}{post.account_name ? ` · ${post.account_name}` : ""}
         </span>
-        <h3 className="media-title font-type line-clamp-2" style={{ fontSize: 15, lineHeight: 1.3, color: "#1A1A18", flex: 1 }}>
+        <h3 className="media-title font-type line-clamp-2" style={{ fontSize: 15, lineHeight: 1.3, color: "#0A0A0A", flex: 1 }}>
           {post.caption_excerpt}
         </h3>
-        <span className="media-foot font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578" }}>
+        <span className="media-foot font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7A5E14" }}>
           Watch →
         </span>
       </div>
@@ -57,10 +57,10 @@ function PostCard({ post }: { post: SocialPost }) {
       target="_blank"
       rel="noopener noreferrer"
       className="media-card"
-      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", display: "flex", flexDirection: "column" }}
+      style={{ textDecoration: "none", borderRight: "2px solid #0A0A0A", borderBottom: "2px solid #0A0A0A", display: "flex", flexDirection: "column" }}
     >
       {post.thumbnail_url && (
-        <div className="media-thumb-wrap" style={{ borderBottom: "2px solid #1A1A18", aspectRatio: "4 / 5", background: "#1A1A18" }}>
+        <div className="media-thumb-wrap" style={{ borderBottom: "2px solid #0A0A0A", aspectRatio: "4 / 5", background: "#0A0A0A" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="media-thumb" src={post.thumbnail_url} alt="" loading="lazy" style={{ height: "100%", objectFit: "cover" }} />
           <span className="media-play" aria-hidden>▶</span>
@@ -68,15 +68,15 @@ function PostCard({ post }: { post: SocialPost }) {
         </div>
       )}
       <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 10, flex: 1, minHeight: post.thumbnail_url ? 0 : 150 }}>
-        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
+        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase", color: "#F50E00" }}>
           {PLATFORM_LABEL[post.platform]}
         </span>
         {post.caption_excerpt && (
-          <p className="media-title line-clamp-2" style={{ fontSize: 12.5, fontWeight: 300, color: "#2A2A28", lineHeight: 1.55, flex: 1 }}>
+          <p className="media-title line-clamp-2" style={{ fontSize: 12.5, fontWeight: 300, color: "#2A2620", lineHeight: 1.55, flex: 1 }}>
             {post.caption_excerpt}
           </p>
         )}
-        <div className="media-foot font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8A8578", display: "flex", justifyContent: "space-between" }}>
+        <div className="media-foot font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7A5E14", display: "flex", justifyContent: "space-between" }}>
           <span>@{post.account_handle}</span>
           <span>View →</span>
         </div>
@@ -96,23 +96,23 @@ function AccountCard({ post }: { post: SocialPost }) {
       target="_blank"
       rel="noopener noreferrer"
       className="media-card"
-      style={{ textDecoration: "none", borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: 18, display: "flex", flexDirection: "column", gap: 12, minHeight: 130 }}
+      style={{ textDecoration: "none", borderRight: "2px solid #0A0A0A", borderBottom: "2px solid #0A0A0A", padding: 18, display: "flex", flexDirection: "column", gap: 12, minHeight: 130 }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span style={{ width: 40, height: 40, background: "#5C7A5F", color: "#EDEBE4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} className="font-type">
+        <span style={{ width: 40, height: 40, background: "#F50E00", color: "#FEF3D5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} className="font-type">
           <span style={{ fontSize: 20, lineHeight: 1 }}>{initial}</span>
         </span>
         <div style={{ minWidth: 0 }}>
-          <div className="media-title font-type" style={{ fontSize: 15, lineHeight: 1.15, color: "#1A1A18", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
-          <span className="media-foot font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8A8578" }}>
+          <div className="media-title font-type" style={{ fontSize: 15, lineHeight: 1.15, color: "#0A0A0A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{name}</div>
+          <span className="media-foot font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#7A5E14" }}>
             {PLATFORM_LABEL[post.platform]} · @{post.account_handle}
           </span>
         </div>
       </div>
       {post.caption_excerpt && (
-        <p className="media-title" style={{ fontSize: 12, fontWeight: 300, color: "#5A5850", lineHeight: 1.5, flex: 1 }}>{post.caption_excerpt}</p>
+        <p className="media-title" style={{ fontSize: 12, fontWeight: 300, color: "#3A2E18", lineHeight: 1.5, flex: 1 }}>{post.caption_excerpt}</p>
       )}
-      <span className="media-channel font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", marginTop: "auto" }}>
+      <span className="media-channel font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#F50E00", marginTop: "auto" }}>
         Follow →
       </span>
     </a>
@@ -123,7 +123,7 @@ function AccountCard({ post }: { post: SocialPost }) {
 
 function Grid({ children }: { children: React.ReactNode }) {
   return (
-    <div className="trends-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: "2px solid #1A1A18", borderLeft: "2px solid #1A1A18" }}>
+    <div className="trends-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: "2px solid #0A0A0A", borderLeft: "2px solid #0A0A0A" }}>
       {children}
     </div>
   );

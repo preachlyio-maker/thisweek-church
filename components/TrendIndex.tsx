@@ -25,18 +25,18 @@ export default function TrendIndex({
   return (
     <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px" }}>
       {/* Page header */}
-      <section style={{ padding: "52px 0 36px", borderBottom: "2px solid #1A1A18" }}>
+      <section style={{ padding: "52px 0 36px", borderBottom: "2px solid #0A0A0A" }}>
         <p
           className="font-mono"
-          style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8A8578", marginBottom: 18, display: "flex", alignItems: "center", gap: 12 }}
+          style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#7A5E14", marginBottom: 18, display: "flex", alignItems: "center", gap: 12 }}
         >
-          <span style={{ display: "block", width: 32, height: 1, background: "#8A8578" }} />
+          <span style={{ display: "block", width: 32, height: 1, background: "#7A5E14" }} />
           {eyebrow}
         </p>
-        <h1 className="font-type hero-h1" style={{ fontSize: 52, lineHeight: 1.05, color: "#1A1A18", marginBottom: 16, maxWidth: 760 }}>
+        <h1 className="font-type hero-h1" style={{ fontSize: 52, lineHeight: 1.05, color: "#0A0A0A", marginBottom: 16, maxWidth: 760 }}>
           {title}
         </h1>
-        <p style={{ fontSize: 14, fontWeight: 300, color: "#5A5850", lineHeight: 1.7, maxWidth: 560 }}>{intro}</p>
+        <p style={{ fontSize: 14, fontWeight: 300, color: "#3A2E18", lineHeight: 1.7, maxWidth: 560 }}>{intro}</p>
       </section>
 
       {/* Filters */}
@@ -51,11 +51,11 @@ export default function TrendIndex({
                 fontSize: 9,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                border: "1px solid #1A1A18",
+                border: "1px solid #0A0A0A",
                 padding: "6px 14px",
                 textDecoration: "none",
-                background: active ? "#1A1A18" : "transparent",
-                color: active ? "#EDEBE4" : "#1A1A18",
+                background: active ? "#0A0A0A" : "transparent",
+                color: active ? "#FEF3D5" : "#0A0A0A",
               }}
             >
               {label}
@@ -66,15 +66,15 @@ export default function TrendIndex({
 
       {/* Grid */}
       {trends.length === 0 ? (
-        <div style={{ border: "2px solid #1A1A18", padding: "72px 40px", textAlign: "center", marginTop: 24 }}>
-          <p className="font-mono" style={{ fontSize: 10, letterSpacing: "0.14em", color: "#8A8578", textTransform: "uppercase" }}>
+        <div style={{ border: "2px solid #0A0A0A", padding: "72px 40px", textAlign: "center", marginTop: 24 }}>
+          <p className="font-mono" style={{ fontSize: 10, letterSpacing: "0.14em", color: "#7A5E14", textTransform: "uppercase" }}>
             No entries in this category yet — check back Monday
           </p>
         </div>
       ) : (
         <div
           className="trends-3"
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: "2px solid #1A1A18", borderLeft: "2px solid #1A1A18", marginTop: 24 }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: "2px solid #0A0A0A", borderLeft: "2px solid #0A0A0A", marginTop: 24 }}
         >
           {trends.map((trend, i) => (
             <TrendCard key={trend.id} trend={trend} index={i} />

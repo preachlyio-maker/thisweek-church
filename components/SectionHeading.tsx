@@ -11,12 +11,12 @@ export default function SectionHeading({
   return (
     <div
       className="font-mono"
-      style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8A8578", padding: "32px 0 20px", display: "flex", alignItems: "center", gap: 16 }}
+      style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#7A5E14", padding: "32px 0 20px", display: "flex", alignItems: "center", gap: 16 }}
     >
       {label}
-      <span style={{ flex: 1, height: 1, background: "#C8C4B8", display: "block" }} />
+      <span style={{ flex: 1, height: 1, background: "#0A0A0A", display: "block" }} />
       {action && (
-        <Link href={action.href} style={{ color: "#ED0008", textDecoration: "none", whiteSpace: "nowrap" }}>
+        <Link href={action.href} style={{ color: "#F50E00", textDecoration: "none", whiteSpace: "nowrap" }}>
           {action.label} →
         </Link>
       )}

@@ -20,21 +20,21 @@ export default async function HomePage() {
       <main>
         <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px" }}>
           {/* Hero */}
-          <section style={{ padding: "78px 0 44px", borderBottom: "2px solid #1A1A18" }}>
-            <p className="font-mono" style={{ fontSize: 10, letterSpacing: "0.26em", textTransform: "uppercase", color: "#8A8578", marginBottom: 28, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-              <span style={{ display: "block", width: 28, height: 2, background: "#ED0008" }} />
+          <section style={{ padding: "78px 0 44px", borderBottom: "2px solid #0A0A0A" }}>
+            <p className="font-mono" style={{ fontSize: 10, letterSpacing: "0.26em", textTransform: "uppercase", color: "#7A5E14", marginBottom: 28, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+              <span style={{ display: "block", width: 28, height: 2, background: "#F50E00" }} />
               America&apos;s Church Data Hub
-              <span style={{ color: "#F59A0B" }}>/</span>
+              <span style={{ color: "#F50E00" }}>/</span>
               Updated Every Monday
             </p>
-            <h1 className="font-type hero-h1" style={{ fontSize: 84, lineHeight: 0.94, letterSpacing: "-0.01em", color: "#1A1A18", marginBottom: 28, maxWidth: 960 }}>
-              What the church is <em style={{ fontStyle: "italic", color: "#ED0008" }}>actually</em> doing.
+            <h1 className="font-type hero-h1" style={{ fontSize: 84, lineHeight: 0.94, letterSpacing: "-0.01em", color: "#0A0A0A", marginBottom: 28, maxWidth: 960 }}>
+              What the church is <em style={{ fontStyle: "italic", color: "#F50E00" }}>actually</em> doing.
             </h1>
-            <p style={{ fontSize: 15.5, fontWeight: 300, color: "#5A5850", lineHeight: 1.75, maxWidth: 580, marginBottom: 32 }}>
+            <p style={{ fontSize: 15.5, fontWeight: 300, color: "#3A2E18", lineHeight: 1.75, maxWidth: 580, marginBottom: 32 }}>
               Worship, preaching, scripture, giving, and engagement data — compiled from primary sources and refreshed every week. The real picture of the American church, not what it says about itself.
             </p>
-            <p className="font-mono" style={{ fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8A8578", borderTop: "1px solid #C8C4B8", paddingTop: 18 }}>
-              Worship <span style={{ color: "#ED0008" }}>/</span> Sermons <span style={{ color: "#ED0008" }}>/</span> Scripture <span style={{ color: "#ED0008" }}>/</span> Giving <span style={{ color: "#ED0008" }}>/</span> Engagement <span style={{ color: "#ED0008" }}>/</span> Benchmarks
+            <p className="font-mono" style={{ fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: "#7A5E14", borderTop: "1px solid #0A0A0A", paddingTop: 18 }}>
+              Worship <span style={{ color: "#F50E00" }}>/</span> Sermons <span style={{ color: "#F50E00" }}>/</span> Scripture <span style={{ color: "#F50E00" }}>/</span> Giving <span style={{ color: "#F50E00" }}>/</span> Engagement <span style={{ color: "#F50E00" }}>/</span> Benchmarks
             </p>
           </section>
 
@@ -56,19 +56,19 @@ export default async function HomePage() {
           </p>
 
           {/* Where this data comes from — provenance */}
-          <section style={{ borderTop: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: "32px 0", margin: "44px 0 0" }}>
-            <h2 className="font-type" style={{ fontSize: 26, lineHeight: 1.15, color: "#1A1A18", marginBottom: 14 }}>
+          <section style={{ borderTop: "2px solid #0A0A0A", borderBottom: "2px solid #0A0A0A", padding: "32px 0", margin: "44px 0 0" }}>
+            <h2 className="font-type" style={{ fontSize: 26, lineHeight: 1.15, color: "#0A0A0A", marginBottom: 14 }}>
               Where this data comes from
             </h2>
-            <p style={{ fontSize: 14, fontWeight: 300, color: "#5A5850", lineHeight: 1.75, maxWidth: 620, marginBottom: 18 }}>
+            <p style={{ fontSize: 14, fontWeight: 300, color: "#3A2E18", lineHeight: 1.75, maxWidth: 620, marginBottom: 18 }}>
               thisweek.church compiles data from CCLI, YouVersion, Barna, Pushpay, and the preachly.io church network —
               each an equal, cited source. Every number traces back to one of them. Everything updates Monday morning.
             </p>
             <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-              <a href="/about/data" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#ED0008", textDecoration: "none" }}>
+              <a href="/about/data" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#F50E00", textDecoration: "none" }}>
                 About our data →
               </a>
-              <a href="https://preachly.io" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#ED0008", textDecoration: "none" }}>
+              <a href="https://preachly.io" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#F50E00", textDecoration: "none" }}>
                 preachly.io →
               </a>
             </div>

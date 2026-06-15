@@ -8,10 +8,10 @@ export default function BenchmarkCard({ benchmark }: { benchmark: BenchmarkPage 
       <article
         className="social-card"
         style={{
-          borderRight: "2px solid #1A1A18",
-          borderBottom: "2px solid #1A1A18",
+          borderRight: "2px solid #0A0A0A",
+          borderBottom: "2px solid #0A0A0A",
           padding: 24,
-          background: "#EDEBE4",
+          background: "#FEF3D5",
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -19,19 +19,19 @@ export default function BenchmarkCard({ benchmark }: { benchmark: BenchmarkPage 
           cursor: "pointer",
         }}
       >
-        <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8A8578" }}>
+        <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#7A5E14" }}>
           {benchmark.label}
         </span>
 
-        <div className="font-type" style={{ fontSize: "3rem", lineHeight: 0.95, color: "#1A1A18" }}>
+        <div className="font-type" style={{ fontSize: "3rem", lineHeight: 0.95, color: "#0A0A0A" }}>
           {benchmark.hero_stat}
         </div>
 
-        <p style={{ fontSize: 12.5, fontWeight: 300, color: "#5A5850", lineHeight: 1.6, flex: 1 }}>
+        <p style={{ fontSize: 12.5, fontWeight: 300, color: "#3A2E18", lineHeight: 1.6, flex: 1 }}>
           {benchmark.summary}
         </p>
 
-        <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", marginTop: "auto" }}>
+        <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#F50E00", marginTop: "auto" }}>
           See the breakdown →
         </span>
       </article>

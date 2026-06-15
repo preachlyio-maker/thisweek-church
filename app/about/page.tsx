@@ -15,7 +15,7 @@ export default function AboutPage() {
     <>
       <SiteHeader />
       <main style={{ maxWidth: 760, margin: "0 auto", padding: "48px 24px" }}>
-        <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8A8578", marginBottom: 18 }}>
+        <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#7A5E14", marginBottom: 18 }}>
           About
         </p>
         <h1 className="font-type" style={{ fontSize: "clamp(2rem, 5vw, 3rem)", lineHeight: 1.08, color: "var(--ink)", marginBottom: 28 }}>

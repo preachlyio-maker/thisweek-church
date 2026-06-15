@@ -15,31 +15,33 @@
 }
 
 :root {
-  --ink: #1A1A18;
-  --paper: #EDEBE4;
-  --muted: #8A8578;
-  --rule: #C8C4B8;
-  --sage: #5C7A5F;
-  --sage-light: #D8E8D8;
-  --tan: #B8A98A;
+  /* Risograph palette */
+  --bg:    #F9A000;   /* orange — page background */
+  --ink:   #0A0A0A;   /* black — text, borders, shadows */
+  --paper: #FEF3D5;   /* cream — card bg & text on dark */
+  --card:  #FEF3D5;
+  --cream: #FDF0D0;
+  --tan:   #C9A84C;   /* secondary surface */
+  --muted: #7A5E14;   /* warm muted text */
+  --rule:  #0A0A0A;
+  --accent:#F50E00;   /* red — primary / CTA */
+  --red:   #F50E00;
+  --black: #0A0A0A;
 
-  /* Semantic aliases used by article/detail pages */
-  --accent: #ED0008;   /* red — accents, links */
-  --pulse:  #E08A0B;   /* live / trending up */
-  --danger: #B0573F;   /* muted terracotta — trending down */
-
-  /* Bold brand palette */
-  --orange: #F59A0B;
-  --gold:   #E0B850;
-  --red:    #ED0008;
-  --coal:   #0A0A0A;
-  --cream:  #F7EFD9;
+  /* legacy aliases kept pointing at the new palette */
+  --sage:  #F50E00;
+  --sage-light: #FDF0D0;
+  --gold:  #C9A84C;
+  --orange:#F9A000;
+  --coal:  #0A0A0A;
+  --pulse: #F50E00;
+  --danger:#F50E00;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 16px;
@@ -47,17 +49,37 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-body { min-height: 100vh; }
+body { min-height: 100vh; background: var(--bg); }
 
-/* Film-grain texture over the whole page — subtle, non-interactive. */
+/* Neo-brutalist card: thick black border + hard offset shadow. */
+.card {
+  background: var(--card);
+  border: 3px solid #0A0A0A;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #0A0A0A;
+}
+
+/* Risograph grain — two fixed multiply layers that burn into the orange bg. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter%20id='c'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.55'%20numOctaves='5'%20seed='8'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR%20type='linear'%20slope='1.4'%20intercept='-0.2'/%3E%3CfeFuncG%20type='linear'%20slope='1.4'%20intercept='-0.2'/%3E%3CfeFuncB%20type='linear'%20slope='1.4'%20intercept='-0.2'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23c)'%20opacity='0.55'/%3E%3C/svg%3E");
+}
 body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 9997;
   pointer-events: none;
-  opacity: 0.11;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.8'%20numOctaves='3'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter%20id='f'%3E%3CfeTurbulence%20type='turbulence'%20baseFrequency='0.92'%20numOctaves='4'%20seed='42'%20stitchTiles='noStitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23f)'%20opacity='0.10'/%3E%3C/svg%3E");
 }
 
 /* Bold color-band category nav (no boxes). */
@@ -103,7 +125,7 @@ body::after {
 /* Keep text legible when the card inverts to black on hover */
 .trend-card:hover h2,
 .trend-card:hover ol span,
-.trend-card:hover > div:first-of-type span { color: #EDEBE4 !important; }
+.trend-card:hover > div:first-of-type span { color: #FEF3D5 !important; }
 .trend-card:hover .font-mono[style*="Full list"],
 .trend-card:hover > .font-mono:last-child { color: var(--sage) !important; }
 
@@ -116,32 +138,32 @@ body::after {
 .cat-tile:hover { background: var(--sage); }
 .cat-tile:hover .cat-name,
 .cat-tile:hover .cat-num,
-.cat-tile:hover .cat-desc { color: #EDEBE4 !important; }
+.cat-tile:hover .cat-desc { color: #FEF3D5 !important; }
 
 /* Social wall + reads hover affordances. */
 .social-card { transition: background 0.15s; }
-.social-card:hover { background: #E4E1D8; }
+.social-card:hover { background: #F2E4BE; }
 .read-row { transition: background 0.15s; }
-.read-row:hover { background: #E4E1D8; }
+.read-row:hover { background: #F2E4BE; }
 
 /* Modern media cards (video / trending) */
-.media-card { background: #EDEBE4; transition: background 0.2s; }
-.media-card:hover { background: #1A1A18; }
-.media-card:hover .media-channel { color: #F59A0B !important; }
-.media-card:hover .media-title { color: #EDEBE4 !important; }
-.media-card:hover .media-foot { color: #8A8578 !important; }
+.media-card { background: #FEF3D5; transition: background 0.2s; }
+.media-card:hover { background: #0A0A0A; }
+.media-card:hover .media-channel { color: #F50E00 !important; }
+.media-card:hover .media-title { color: #FEF3D5 !important; }
+.media-card:hover .media-foot { color: #7A5E14 !important; }
 .media-thumb-wrap { position: relative; overflow: hidden; }
 .media-thumb { display: block; width: 100%; transition: transform 0.45s ease; }
 .media-card:hover .media-thumb { transform: scale(1.07); }
 .media-badge {
   position: absolute; bottom: 8px; right: 8px;
-  background: rgba(26,24,24,0.86); color: #EDEBE4;
+  background: rgba(26,24,24,0.86); color: #FEF3D5;
   font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.04em;
   padding: 3px 7px;
 }
 .media-play {
   position: absolute; top: 8px; left: 8px;
-  width: 30px; height: 30px; background: rgba(26,24,24,0.78); color: #EDEBE4;
+  width: 30px; height: 30px; background: rgba(26,24,24,0.78); color: #FEF3D5;
   display: flex; align-items: center; justify-content: center; font-size: 11px;
 }
 .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -153,7 +175,7 @@ body::after {
   font-size: 13px;
   font-weight: 300;
   line-height: 1.75;
-  color: #5A5850;
+  color: #3A2E18;
   max-width: 760px;
 }
 

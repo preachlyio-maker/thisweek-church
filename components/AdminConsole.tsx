@@ -88,18 +88,18 @@ const SPECS: Spec[] = [
 
 const input: React.CSSProperties = {
   width: "100%",
-  background: "#EDEBE4",
-  border: "2px solid #1A1A18",
+  background: "#FEF3D5",
+  border: "2px solid #0A0A0A",
   padding: "10px 12px",
   fontSize: 13,
-  color: "#1A1A18",
+  color: "#0A0A0A",
   fontFamily: "'Space Mono', monospace",
 };
 const label: React.CSSProperties = {
   fontSize: 9,
   letterSpacing: "0.14em",
   textTransform: "uppercase",
-  color: "#8A8578",
+  color: "#7A5E14",
   display: "block",
   marginBottom: 6,
 };
@@ -152,9 +152,9 @@ function Manager({ spec, secret }: { spec: Spec; secret: string }) {
   }
 
   return (
-    <section style={{ border: "2px solid #1A1A18", padding: 22, marginBottom: 24 }}>
-      <h2 className="font-type" style={{ fontSize: 22, color: "#1A1A18", marginBottom: 4 }}>{spec.title}</h2>
-      <p style={{ fontSize: 12, fontWeight: 300, color: "#8A8578", marginBottom: 18 }}>{spec.blurb}</p>
+    <section style={{ border: "2px solid #0A0A0A", padding: 22, marginBottom: 24 }}>
+      <h2 className="font-type" style={{ fontSize: 22, color: "#0A0A0A", marginBottom: 4 }}>{spec.title}</h2>
+      <p style={{ fontSize: 12, fontWeight: 300, color: "#7A5E14", marginBottom: 18 }}>{spec.blurb}</p>
 
       <form onSubmit={add} style={{ display: "grid", gap: 12, marginBottom: 18 }}>
         {spec.fields.map((f) => (
@@ -173,26 +173,26 @@ function Manager({ spec, secret }: { spec: Spec; secret: string }) {
           </div>
         ))}
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <button type="submit" disabled={busy} className="font-mono" style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", background: "#1A1A18", color: "#EDEBE4", border: "2px solid #1A1A18", padding: "11px 20px", cursor: busy ? "wait" : "pointer" }}>
+          <button type="submit" disabled={busy} className="font-mono" style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", background: "#0A0A0A", color: "#FEF3D5", border: "2px solid #0A0A0A", padding: "11px 20px", cursor: busy ? "wait" : "pointer" }}>
             {busy ? "Working…" : "Add"}
           </button>
-          <button type="button" onClick={load} disabled={busy} className="font-mono" style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", background: "transparent", color: "#1A1A18", border: "2px solid #1A1A18", padding: "11px 20px", cursor: "pointer" }}>
+          <button type="button" onClick={load} disabled={busy} className="font-mono" style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", background: "transparent", color: "#0A0A0A", border: "2px solid #0A0A0A", padding: "11px 20px", cursor: "pointer" }}>
             Show existing
           </button>
-          {msg && <span className="font-mono" style={{ fontSize: 11, color: msg.includes("✓") ? "#3A6A3E" : "#B0573F" }}>{msg}</span>}
+          {msg && <span className="font-mono" style={{ fontSize: 11, color: msg.includes("✓") ? "#3A6A3E" : "#F50E00" }}>{msg}</span>}
         </div>
       </form>
 
       {rows && (
-        <div style={{ borderTop: "1px solid #C8C4B8" }}>
-          {rows.length === 0 && <p className="font-mono" style={{ fontSize: 11, color: "#8A8578", padding: "12px 0" }}>None yet.</p>}
+        <div style={{ borderTop: "1px solid #0A0A0A" }}>
+          {rows.length === 0 && <p className="font-mono" style={{ fontSize: 11, color: "#7A5E14", padding: "12px 0" }}>None yet.</p>}
           {rows.map((row) => (
-            <div key={row.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "10px 0", borderBottom: "1px solid #C8C4B8" }}>
+            <div key={row.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "10px 0", borderBottom: "1px solid #0A0A0A" }}>
               <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: 12.5, color: "#1A1A18", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{spec.primary(row)}</div>
-                {spec.secondary && <div className="font-mono" style={{ fontSize: 9, color: "#8A8578", textTransform: "uppercase", letterSpacing: "0.08em" }}>{spec.secondary(row)}</div>}
+                <div style={{ fontSize: 12.5, color: "#0A0A0A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{spec.primary(row)}</div>
+                {spec.secondary && <div className="font-mono" style={{ fontSize: 9, color: "#7A5E14", textTransform: "uppercase", letterSpacing: "0.08em" }}>{spec.secondary(row)}</div>}
               </div>
-              <button onClick={() => del(row.id)} disabled={busy} title="Delete" className="font-mono" style={{ fontSize: 14, lineHeight: 1, background: "transparent", color: "#B0573F", border: "1px solid #B0573F", padding: "4px 9px", cursor: "pointer", flexShrink: 0 }}>
+              <button onClick={() => del(row.id)} disabled={busy} title="Delete" className="font-mono" style={{ fontSize: 14, lineHeight: 1, background: "transparent", color: "#F50E00", border: "1px solid #F50E00", padding: "4px 9px", cursor: "pointer", flexShrink: 0 }}>
                 ✕
               </button>
             </div>
@@ -234,13 +234,13 @@ export default function AdminConsole() {
       </div>
 
       {/* One-button publish */}
-      <div style={{ border: "2px solid #5C7A5F", background: "#D8E8D8", padding: 20, marginBottom: 32, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+      <div style={{ border: "2px solid #F50E00", background: "#FDF0D0", padding: 20, marginBottom: 32, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
         <div>
-          <div className="font-type" style={{ fontSize: 18, color: "#1A1A18", marginBottom: 2 }}>Refresh the live site</div>
+          <div className="font-type" style={{ fontSize: 18, color: "#0A0A0A", marginBottom: 2 }}>Refresh the live site</div>
           <div style={{ fontSize: 12, fontWeight: 300, color: "#3A6A3E" }}>Pulls the latest videos, reads &amp; articles, then updates the public pages. Run this after you add or remove anything.</div>
-          {refreshMsg && <div className="font-mono" style={{ fontSize: 11, marginTop: 8, color: refreshMsg.includes("✓") ? "#3A6A3E" : "#B0573F" }}>{refreshMsg}</div>}
+          {refreshMsg && <div className="font-mono" style={{ fontSize: 11, marginTop: 8, color: refreshMsg.includes("✓") ? "#3A6A3E" : "#F50E00" }}>{refreshMsg}</div>}
         </div>
-        <button onClick={refresh} disabled={refreshing} className="font-mono" style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", background: "#1A1A18", color: "#EDEBE4", border: "2px solid #1A1A18", padding: "14px 26px", cursor: refreshing ? "wait" : "pointer", whiteSpace: "nowrap" }}>
+        <button onClick={refresh} disabled={refreshing} className="font-mono" style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", background: "#0A0A0A", color: "#FEF3D5", border: "2px solid #0A0A0A", padding: "14px 26px", cursor: refreshing ? "wait" : "pointer", whiteSpace: "nowrap" }}>
           {refreshing ? "Starting…" : "Refresh site →"}
         </button>
       </div>

@@ -27,7 +27,7 @@ export default function AboutDataPage() {
           <span style={{ color: "var(--ink)" }}>Our Data</span>
         </nav>
 
-        <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#8A8578", marginBottom: 18 }}>
+        <p className="font-mono" style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "#7A5E14", marginBottom: 18 }}>
           Methodology &amp; sources
         </p>
         <h1 className="font-type" style={{ fontSize: "clamp(2rem, 5vw, 2.8rem)", lineHeight: 1.1, color: "var(--ink)", marginBottom: 32 }}>
