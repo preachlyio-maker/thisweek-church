@@ -40,7 +40,7 @@ function GridCard({ v }: { v: SocialPost }) {
         <Thumb v={v} />
       </div>
       <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 7, flex: 1 }}>
-        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#5C7A5F" }}>
+        <span className="media-channel font-mono" style={{ fontSize: 8, letterSpacing: "0.14em", textTransform: "uppercase", color: "#F59A0B" }}>
           {v.account_name || PLATFORM_LABEL[v.platform]}
         </span>
         <h4 className="media-title font-type line-clamp-2" style={{ fontSize: 14, lineHeight: 1.3, color: "#1A1A18", flex: 1 }}>{v.caption_excerpt}</h4>
@@ -72,7 +72,7 @@ export default function VideoGallery({ videos }: { videos: SocialPost[] }) {
           <Thumb v={feature} />
         </div>
         <div style={{ borderRight: "2px solid #1A1A18", borderBottom: "2px solid #1A1A18", padding: 28, display: "flex", flexDirection: "column", justifyContent: "center", gap: 14 }}>
-          <span className="media-channel font-mono" style={{ fontSize: 9, letterSpacing: "0.16em", textTransform: "uppercase", color: "#5C7A5F" }}>
+          <span className="media-channel font-mono" style={{ fontSize: 9, letterSpacing: "0.16em", textTransform: "uppercase", color: "#F59A0B" }}>
             {PLATFORM_LABEL[feature.platform]}{feature.account_name ? ` · ${feature.account_name}` : ""}
           </span>
           <h3 className="media-title font-type" style={{ fontSize: 28, lineHeight: 1.15, color: "#1A1A18" }}>{feature.caption_excerpt}</h3>

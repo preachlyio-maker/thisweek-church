@@ -29,11 +29,11 @@ export default function BestReads({ reads }: { reads: ExternalRead[] }) {
           >
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "#5C7A5F" }}>
+                <span className="font-mono" style={{ fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "#ED0008" }}>
                   {read.source}
                 </span>
                 {read.featured && (
-                  <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.1em", textTransform: "uppercase", background: "#5C7A5F", color: "#EDEBE4", padding: "2px 7px" }}>
+                  <span className="font-mono" style={{ fontSize: 8, letterSpacing: "0.1em", textTransform: "uppercase", background: "#ED0008", color: "#EDEBE4", padding: "2px 7px" }}>
                     Editor's pick
                   </span>
                 )}

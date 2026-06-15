@@ -16,7 +16,7 @@ export default function SectionHeading({
       {label}
       <span style={{ flex: 1, height: 1, background: "#C8C4B8", display: "block" }} />
       {action && (
-        <Link href={action.href} style={{ color: "#5C7A5F", textDecoration: "none", whiteSpace: "nowrap" }}>
+        <Link href={action.href} style={{ color: "#ED0008", textDecoration: "none", whiteSpace: "nowrap" }}>
           {action.label} →
         </Link>
       )}

@@ -22,19 +22,19 @@ export default async function HomePage() {
           {/* Hero */}
           <section style={{ padding: "78px 0 44px", borderBottom: "2px solid #1A1A18" }}>
             <p className="font-mono" style={{ fontSize: 10, letterSpacing: "0.26em", textTransform: "uppercase", color: "#8A8578", marginBottom: 28, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-              <span style={{ display: "block", width: 28, height: 1, background: "#5C7A5F" }} />
+              <span style={{ display: "block", width: 28, height: 2, background: "#ED0008" }} />
               America&apos;s Church Data Hub
-              <span style={{ color: "#C8C4B8" }}>/</span>
+              <span style={{ color: "#F59A0B" }}>/</span>
               Updated Every Monday
             </p>
             <h1 className="font-type hero-h1" style={{ fontSize: 84, lineHeight: 0.94, letterSpacing: "-0.01em", color: "#1A1A18", marginBottom: 28, maxWidth: 960 }}>
-              What the church is <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>actually</em> doing.
+              What the church is <em style={{ fontStyle: "italic", color: "#ED0008" }}>actually</em> doing.
             </h1>
             <p style={{ fontSize: 15.5, fontWeight: 300, color: "#5A5850", lineHeight: 1.75, maxWidth: 580, marginBottom: 32 }}>
               Worship, preaching, scripture, giving, and engagement data — compiled from primary sources and refreshed every week. The real picture of the American church, not what it says about itself.
             </p>
             <p className="font-mono" style={{ fontSize: 9.5, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8A8578", borderTop: "1px solid #C8C4B8", paddingTop: 18 }}>
-              Worship <span style={{ color: "#5C7A5F" }}>/</span> Sermons <span style={{ color: "#5C7A5F" }}>/</span> Scripture <span style={{ color: "#5C7A5F" }}>/</span> Giving <span style={{ color: "#5C7A5F" }}>/</span> Engagement <span style={{ color: "#5C7A5F" }}>/</span> Benchmarks
+              Worship <span style={{ color: "#ED0008" }}>/</span> Sermons <span style={{ color: "#ED0008" }}>/</span> Scripture <span style={{ color: "#ED0008" }}>/</span> Giving <span style={{ color: "#ED0008" }}>/</span> Engagement <span style={{ color: "#ED0008" }}>/</span> Benchmarks
             </p>
           </section>
 
@@ -65,10 +65,10 @@ export default async function HomePage() {
               each an equal, cited source. Every number traces back to one of them. Everything updates Monday morning.
             </p>
             <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-              <a href="/about/data" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", textDecoration: "none" }}>
+              <a href="/about/data" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#ED0008", textDecoration: "none" }}>
                 About our data →
               </a>
-              <a href="https://preachly.io" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5C7A5F", textDecoration: "none" }}>
+              <a href="https://preachly.io" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#ED0008", textDecoration: "none" }}>
                 preachly.io →
               </a>
             </div>

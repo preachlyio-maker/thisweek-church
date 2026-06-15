@@ -21,7 +21,7 @@ export default function SiteHeader() {
               className="font-mono"
               style={{ fontSize: "10px", letterSpacing: "0.16em", color: "#B8A98A", padding: "0 24px", whiteSpace: "nowrap" }}
             >
-              {item} <span style={{ color: "#5C7A5F" }}>✦</span>
+              {item} <span style={{ color: "#ED0008" }}>✦</span>
             </span>
           ))}
         </div>
@@ -35,7 +35,7 @@ export default function SiteHeader() {
               Updated Weekly
             </span>
             <span className="font-type" style={{ fontSize: "26px", color: "#1A1A18", lineHeight: 1, display: "block" }}>
-              This Week · <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>Church</em>
+              This Week · <em style={{ fontStyle: "italic", color: "#ED0008" }}>Church</em>
             </span>
           </Link>
 

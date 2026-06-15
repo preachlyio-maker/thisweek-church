@@ -6,12 +6,12 @@ export default function SiteFooter() {
       <div className="footer-grid" style={{ maxWidth: 1060, margin: "0 auto", padding: "36px 28px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr", gap: 40 }}>
         <div>
           <span className="font-type" style={{ fontSize: 20, color: "#1A1A18", marginBottom: 8, display: "block" }}>
-            This Week · <em style={{ fontStyle: "italic", color: "#5C7A5F" }}>Church</em>
+            This Week · <em style={{ fontStyle: "italic", color: "#ED0008" }}>Church</em>
           </span>
           <p style={{ fontSize: 12, fontWeight: 300, color: "#8A8578", lineHeight: 1.6 }}>
             America&apos;s weekly church data hub — worship, sermons, giving, attendance, and engagement, updated every
             Monday. Compiled from CCLI, YouVersion, Barna, Pushpay, and the{" "}
-            <a href="https://preachly.io" style={{ color: "#5C7A5F" }}>preachly.io</a> church network.
+            <a href="https://preachly.io" style={{ color: "#ED0008" }}>preachly.io</a> church network.
           </p>
         </div>
 
