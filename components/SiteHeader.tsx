@@ -2,8 +2,7 @@ import Link from "next/link";
 
 const TICKER_ITEMS = [
   "Top Worship Songs",
-  "Sermon Trends",
-  "Scripture Data",
+  "Teaching Trends",
   "Comms Ideas",
   "Ministry Benchmarks",
   "Seasonal Campaigns",

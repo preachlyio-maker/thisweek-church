@@ -3,7 +3,7 @@ import { TrendPage } from "@/lib/types";
 import { format } from "date-fns";
 
 const CATEGORY_LABELS: Record<string, string> = {
-  worship: "Worship", sermon: "Sermon", scripture: "Scripture",
+  worship: "Worship", sermon: "Teaching", scripture: "Teaching",
   comms: "Comms", seasonal: "Seasonal", benchmark: "Benchmarks",
 };
 

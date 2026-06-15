@@ -16,8 +16,7 @@ export const metadata: Metadata = {
 const FILTERS: { key: string; label: string }[] = [
   { key: "all", label: "All" },
   { key: "worship", label: "Worship" },
-  { key: "sermon", label: "Sermon" },
-  { key: "scripture", label: "Scripture" },
+  { key: "teaching", label: "Teaching" },
   { key: "comms", label: "Comms" },
   { key: "benchmark", label: "Benchmarks" },
   { key: "seasonal", label: "Seasonal" },
@@ -32,7 +31,12 @@ export default async function TrendsPage({
   const active = category && FILTERS.some((f) => f.key === category) ? category : "all";
 
   const all = await getAllTrends();
-  const trends = active === "all" ? all : all.filter((t) => t.category === (active as TrendCategory));
+  const trends =
+    active === "all"
+      ? all
+      : active === "teaching"
+      ? all.filter((t) => t.category === "sermon" || t.category === "scripture")
+      : all.filter((t) => t.category === (active as TrendCategory));
 
   return (
     <>
@@ -41,7 +45,7 @@ export default async function TrendsPage({
         <TrendIndex
           eyebrow="The full index"
           title="All trends, updated weekly"
-          intro="Browse every tracked trend across worship, preaching, scripture, communications, and ministry benchmarks. The list refreshes automatically every Monday."
+          intro="Browse every tracked trend across worship, teaching, communications, and ministry benchmarks. The list refreshes automatically every Monday."
           trends={trends}
           filters={FILTERS.map((f) => ({
             href: f.key === "all" ? "/trends" : `/trends?category=${f.key}`,

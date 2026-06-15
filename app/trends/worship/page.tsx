@@ -15,8 +15,7 @@ export const metadata: Metadata = {
 const CAT_NAV = [
   { href: "/trends", label: "All", key: "all" },
   { href: "/trends/worship", label: "Worship", key: "worship" },
-  { href: "/trends/sermons", label: "Sermons", key: "sermons" },
-  { href: "/trends/scripture", label: "Scripture", key: "scripture" },
+  { href: "/trends/teaching", label: "Teaching", key: "teaching" },
 ];
 
 export default async function WorshipTrendsPage() {

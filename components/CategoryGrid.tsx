@@ -4,11 +4,10 @@ type Category = { name: string; desc: string; href: string; n: string; bg: strin
 
 const CATEGORIES: Category[] = [
   { name: "Worship", desc: "Songs & set lists", href: "/trends/worship", n: "01", bg: "#F50E00", fg: "#FEF3D5" },
-  { name: "Preaching", desc: "Sermons & series", href: "/trends/sermons", n: "02", bg: "#0A0A0A", fg: "#FEF3D5" },
-  { name: "Scripture", desc: "Most-preached passages", href: "/trends/scripture", n: "03", bg: "#C9A84C", fg: "#0A0A0A" },
-  { name: "Communications", desc: "Social, email & design", href: "/trends?category=comms", n: "04", bg: "#F50E00", fg: "#FEF3D5" },
-  { name: "Giving & Growth", desc: "Benchmarks & attendance", href: "/benchmarks", n: "05", bg: "#0A0A0A", fg: "#FEF3D5" },
-  { name: "Leadership", desc: "Reads & analysis", href: "/articles", n: "06", bg: "#C9A84C", fg: "#0A0A0A" },
+  { name: "Teaching", desc: "Sermons, series & scripture", href: "/trends/teaching", n: "02", bg: "#0A0A0A", fg: "#FEF3D5" },
+  { name: "Communications", desc: "Social, email & design", href: "/trends?category=comms", n: "03", bg: "#C9A84C", fg: "#0A0A0A" },
+  { name: "Giving & Growth", desc: "Benchmarks & attendance", href: "/benchmarks", n: "04", bg: "#F50E00", fg: "#FEF3D5" },
+  { name: "Leadership", desc: "Reads & analysis", href: "/articles", n: "05", bg: "#0A0A0A", fg: "#FEF3D5" },
 ];
 
 export default function CategoryGrid() {

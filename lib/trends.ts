@@ -44,6 +44,12 @@ export async function getTrendsByCategory(category: TrendCategory): Promise<Tren
   return all.filter((t) => t.category === category);
 }
 
+/** "Teaching" is a presentation grouping of sermon + scripture trends. */
+export async function getTeachingTrends(): Promise<TrendPage[]> {
+  const all = await getAllTrends();
+  return all.filter((t) => t.category === "sermon" || t.category === "scripture");
+}
+
 export async function getTrendBySlug(slug: string): Promise<TrendPage | null> {
   const live = await fetchPublished();
   if (live) return live.find((t) => t.slug === slug) ?? null;
